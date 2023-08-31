@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">EYM</string>
+    <string name="override_name">Override Name</string>
+    <string name="Name">Name</string>
+    <string name="Price">Price</string>
+    <string name="OfferPercentage">OfferPercentage</string>
+    <string name="Description">Description</string>
+    <string name="Sizes">Sizes</string>
+    <string name="categoryName">Category Name</string>
+    <string name="g_see_product">See product</string>
+</resources>

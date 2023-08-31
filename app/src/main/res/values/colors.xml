@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="purple">#51426E</color>
+    <color name="g_white">#FFFFFFFF</color>
+    <color name="g_dark_blue">#00008b</color>
+    <color name="g_blue_gray200"> #5b686d</color>
+    <color name="g_light_red"> #d97082</color>
+    <color name="g_search_and_icons">#FAFBFC</color>
+    <color name="g_card_background">#FAFDFF</color>
+    <color name="g_hint">#666666</color>
+    <color name="g_blue">#000DAE</color>
+
+</resources>
