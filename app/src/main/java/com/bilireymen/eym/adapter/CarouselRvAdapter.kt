@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bilireymen.eym.R
 import com.bilireymen.eym.models.Product
@@ -22,8 +23,9 @@ class CarouselRvAdapter(private val context: Context, private val productArrayLi
     override fun onBindViewHolder(holder: CarouselRvAdapter.CarouselHolder, position: Int) {
         holder.productItem = productArrayList[position]
         holder.nameTextView.text = holder.productItem.name
-        holder.priceTextView.text = holder.productItem.price.toString()
-        val oldPriceHtml = "<strike>${holder.productItem.offerPercentage}</strike>"
+        holder.priceTextView.text ="$" + holder.productItem.price.toString()
+        holder.priceTextView.setTextColor(ContextCompat.getColor(context, R.color.red))
+        val oldPriceHtml = "<strike>${"$" + holder.productItem.offerPercentage}</strike>"
         holder.priceOldTextView.text = Html.fromHtml(oldPriceHtml)
         Glide.with(holder.itemView.context).load(holder.productItem.images!!.get(0)).into(holder.productIv)
     }
@@ -39,6 +41,7 @@ class CarouselRvAdapter(private val context: Context, private val productArrayLi
         var priceTextView: TextView = itemView.findViewById(R.id.carouselRvNewPrice)
         var priceOldTextView: TextView = itemView.findViewById(R.id.carouselRvOldPrice)
         var productIv: ImageView = itemView.findViewById(R.id.img_carouselRv_item)
+
     }
 
 }

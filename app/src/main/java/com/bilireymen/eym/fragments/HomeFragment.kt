@@ -65,7 +65,12 @@ class HomeFragment:Fragment(R.layout.fragment_home) {
     private fun carouselRvAdapter(){
         adapterCarousel = CarouselRvAdapter(requireContext(), (activity as ShoppingActivity).productArrayList ?: arrayListOf())
         binding.carouselRv.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        binding.carouselRv.adapter = adapterCarousel
+       binding.carouselRv.adapter=adapterCarousel
+       binding.carouselRv.apply {
+           set3DItem(true)
+           setAlpha(true)
+           setInfinite(true)
+       }
     }
 
     private fun gridRvAdapter(){

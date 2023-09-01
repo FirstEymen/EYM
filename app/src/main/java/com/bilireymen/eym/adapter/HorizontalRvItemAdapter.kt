@@ -23,7 +23,7 @@ class HorizontalRvItemAdapter(private val context: Context, private val productA
             holder.productItem = productArrayList[position]
 
             holder.nameTextView.text =  holder.productItem?.name
-            holder.priceTextView.text =  holder.productItem?.price.toString()
+            holder.priceTextView.text = "$" + holder.productItem?.price.toString()
             Glide.with(holder.itemView.context).load(productArrayList.get(position).images!!.get(0)).into(holder.productIv)
         if (CommonFunctions.getFavoriteProductList().contains(holder.productItem?.id))
             Glide.with(holder.favoriteIv.context).load(R.drawable.ic_favoritered).into(holder.favoriteIv)

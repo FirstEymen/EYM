@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bilireymen.eym.CommonFunctions
 import com.bilireymen.eym.R
@@ -24,8 +25,9 @@ class GridRvAdapter(private val context: Context, private val productArrayList: 
     override fun onBindViewHolder(holder: GridHolder, position: Int) {
         holder.productItem = productArrayList[position]
         holder.nameTextView.text = holder.productItem.name
-        holder.priceTextView.text = holder.productItem.price.toString()
-        val oldPriceHtml = "<strike>${holder.productItem.offerPercentage}</strike>"
+        holder.priceTextView.text = "$" + holder.productItem.price.toString()
+        holder.priceTextView.setTextColor(ContextCompat.getColor(context, R.color.red))
+        val oldPriceHtml = "<strike>${"$" + holder.productItem.offerPercentage}</strike>"
         holder.priceOldTextView.text = Html.fromHtml(oldPriceHtml)
         Glide.with(holder.itemView.context).load(holder.productItem.images!!.get(0)).into(holder.productIv)
         if (CommonFunctions.getFavoriteProductList().contains(holder.productItem.id))
