@@ -14,7 +14,7 @@ import com.bilireymen.eym.R
 import com.bilireymen.eym.models.Product
 import com.bumptech.glide.Glide
 
-class GridRvAdapter(private val context: Context, private val productArrayList: ArrayList<Product>): RecyclerView.Adapter<GridRvAdapter.GridHolder>(){
+class GridRvAdapter(private val context: Context, private val productArrayList: ArrayList<Product>,private var onItemClickListener: OnItemClickListener? = null): RecyclerView.Adapter<GridRvAdapter.GridHolder>(){
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GridHolder {
@@ -34,6 +34,7 @@ class GridRvAdapter(private val context: Context, private val productArrayList: 
            Glide.with(holder.favoriteIv.context).load(R.drawable.ic_favoritered).into(holder.favoriteIv)
         else
            Glide.with(holder.favoriteIv.context).load(R.drawable.ic_favorite).into(holder.favoriteIv)
+
     }
 
     override fun getItemCount(): Int {
@@ -53,5 +54,26 @@ class GridRvAdapter(private val context: Context, private val productArrayList: 
                 this@GridRvAdapter.notifyDataSetChanged()
             }
         }
+        init {
+            itemView.setOnClickListener{
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    onItemClickListener?.onItemClick(position, productItem)
+                }
+            }
+        }
+
     }
+
+    interface OnItemClickListener {
+        fun onItemClick(position: Int, product: Product)
+
+    }
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        onItemClickListener = listener
+    }
+
+
+
+
 }

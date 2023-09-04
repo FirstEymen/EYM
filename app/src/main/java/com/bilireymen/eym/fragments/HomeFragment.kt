@@ -1,12 +1,15 @@
 package com.bilireymen.eym.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bilireymen.eym.ProductDetailsActivity
 import com.bilireymen.eym.R
 import com.bilireymen.eym.ShoppingActivity
 import com.bilireymen.eym.adapter.CarouselRvAdapter
@@ -14,6 +17,7 @@ import com.bilireymen.eym.adapter.GridRvAdapter
 import com.bilireymen.eym.adapter.HorizontalRvItemAdapter
 import com.bilireymen.eym.databinding.FragmentHomeBinding
 import com.bilireymen.eym.eventbus.ProductListReceived
+import com.bilireymen.eym.models.Product
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -48,9 +52,12 @@ class HomeFragment:Fragment(R.layout.fragment_home) {
 
         binding=FragmentHomeBinding.inflate(layoutInflater)
 
+
+
         horizontalRvAdapter()
         carouselRvAdapter()
         gridRvAdapter()
+
 
         return binding.root
 
@@ -60,6 +67,14 @@ class HomeFragment:Fragment(R.layout.fragment_home) {
         adapterHorizontal = HorizontalRvItemAdapter(requireContext(), (activity as ShoppingActivity).productArrayList ?: arrayListOf())
         binding.horizontalRv.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.horizontalRv.adapter = adapterHorizontal
+
+        adapterHorizontal.setOnItemClickListener(object : HorizontalRvItemAdapter.OnItemClickListener{
+            override fun onItemClick(position: Int, product: Product) {
+                val intent = Intent(requireContext(), ProductDetailsActivity::class.java)
+                intent.putExtra("product", product)
+                startActivity(intent)
+            }
+        })
     }
 
     private fun carouselRvAdapter(){
@@ -71,12 +86,29 @@ class HomeFragment:Fragment(R.layout.fragment_home) {
            setAlpha(true)
            setInfinite(true)
        }
+        adapterCarousel.setOnItemClickListener(object : CarouselRvAdapter.OnItemClickListener{
+            override fun onItemClick(position: Int, product: Product) {
+                val intent = Intent(requireContext(), ProductDetailsActivity::class.java)
+                intent.putExtra("product", product)
+                startActivity(intent)
+            }
+        })
     }
 
     private fun gridRvAdapter(){
         adapterGrid = GridRvAdapter(requireContext(), (activity as ShoppingActivity).productArrayList ?: arrayListOf())
         binding.gridRV.layoutManager = GridLayoutManager(requireContext(), 2)
         binding.gridRV.adapter = adapterGrid
+
+        adapterGrid.setOnItemClickListener(object : GridRvAdapter.OnItemClickListener {
+            override fun onItemClick(position: Int, product: Product) {
+
+                val intent = Intent(requireContext(), ProductDetailsActivity::class.java)
+                intent.putExtra("product", product)
+                startActivity(intent)
+            }
+        })
+
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -85,5 +117,7 @@ class HomeFragment:Fragment(R.layout.fragment_home) {
         carouselRvAdapter()
         gridRvAdapter()
     }
+
+
 
 }
