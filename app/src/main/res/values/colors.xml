@@ -12,5 +12,6 @@
     <color name="g_hint">#666666</color>
     <color name="g_blue">#000DAE</color>
     <color name="red">#FF1100</color>
+    <color name="g_line">#E9EAEC</color>
 
 </resources>

@@ -13,7 +13,7 @@ import com.bilireymen.eym.R
 import com.bilireymen.eym.models.Product
 import com.bumptech.glide.Glide
 
-class CarouselRvAdapter(private val context: Context, private val productArrayList: ArrayList<Product>): RecyclerView.Adapter<CarouselRvAdapter.CarouselHolder>() {
+class CarouselRvAdapter(private val context: Context, private val productArrayList: ArrayList<Product>,private var onItemClickListener: OnItemClickListener? = null): RecyclerView.Adapter<CarouselRvAdapter.CarouselHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CarouselRvAdapter.CarouselHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.activity_carouselrv_item, parent, false)
@@ -42,6 +42,24 @@ class CarouselRvAdapter(private val context: Context, private val productArrayLi
         var priceOldTextView: TextView = itemView.findViewById(R.id.carouselRvOldPrice)
         var productIv: ImageView = itemView.findViewById(R.id.img_carouselRv_item)
 
+        init {
+            itemView.setOnClickListener{
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    onItemClickListener?.onItemClick(position, productItem)
+                }
+            }
+        }
+
     }
+
+    interface OnItemClickListener {
+        fun onItemClick(position: Int, product: Product)
+
+    }
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        onItemClickListener = listener
+    }
+
 
 }

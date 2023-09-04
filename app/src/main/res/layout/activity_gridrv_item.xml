@@ -71,6 +71,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/sf_pro_display"
             android:hint="@string/OfferPercentage"
+            android:layout_marginStart="10dp"
             android:textColor="@color/black"
             android:textSize="12sp"/>
 </LinearLayout>

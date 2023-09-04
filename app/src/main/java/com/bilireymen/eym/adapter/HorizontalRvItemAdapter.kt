@@ -12,7 +12,7 @@ import com.bilireymen.eym.R
 import com.bilireymen.eym.models.Product
 import com.bumptech.glide.Glide
 
-class HorizontalRvItemAdapter(private val context: Context, private val productArrayList: ArrayList<Product>): RecyclerView.Adapter<HorizontalRvItemAdapter.HorizontalHolder>(){
+class HorizontalRvItemAdapter(private val context: Context, private val productArrayList: ArrayList<Product>,private var onItemClickListener: OnItemClickListener? = null): RecyclerView.Adapter<HorizontalRvItemAdapter.HorizontalHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HorizontalHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.activity_horizontalrv_item, parent, false)
@@ -47,5 +47,22 @@ class HorizontalRvItemAdapter(private val context: Context, private val productA
                 this@HorizontalRvItemAdapter.notifyDataSetChanged()
             }
         }
+
+        init {
+            itemView.setOnClickListener{
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    onItemClickListener?.onItemClick(position, productItem!!)
+                }
+            }
+        }
+    }
+
+    interface OnItemClickListener {
+        fun onItemClick(position: Int, product: Product)
+
+    }
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        onItemClickListener = listener
     }
 }
