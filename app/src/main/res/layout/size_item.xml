@@ -4,20 +4,20 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <de.hdodenhof.circleimageview.CircleImageView
+    <ImageView
         android:id="@+id/imageShadow"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:src="#B8D9FA"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:background="#B8D9FA"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:visibility="invisible"/>
-    
-    <de.hdodenhof.circleimageview.CircleImageView
+
+    <ImageView
         android:id="@+id/imageSize"
-        android:layout_width="21dp"
-        android:layout_height="21dp"
-        android:src="@color/g_blue_gray200"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@color/g_blue_gray200"
         app:layout_constraintStart_toStartOf="@+id/imageShadow"
         app:layout_constraintTop_toTopOf="@id/imageShadow"
         app:layout_constraintEnd_toEndOf="@id/imageShadow"
@@ -25,17 +25,17 @@
 
     <TextView
         android:id="@+id/tvSize"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_picked"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@color/g_line"
         app:layout_constraintStart_toStartOf="@id/imageSize"
         app:layout_constraintTop_toTopOf="@id/imageSize"
         app:layout_constraintBottom_toBottomOf="@id/imageSize"
         app:layout_constraintEnd_toEndOf="@id/imageSize"
         android:text="S"
         android:textAlignment="center"
-        android:textSize="12sp"
-        android:textColor="@color/white"/>
-
-
+        android:textSize="18sp"
+        android:textStyle="normal"
+        android:textColor="@color/black"
+        android:gravity="center"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

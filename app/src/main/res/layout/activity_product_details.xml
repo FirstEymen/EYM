@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<androidx.core.widget.NestedScrollView
+    android:layout_width="match_parent"
+    android:layout_marginBottom="75dp"
     android:fillViewport="true"
     android:layout_height="match_parent">
 
@@ -29,6 +32,20 @@
                 android:id="@+id/viewPagerProductImages"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
+
+            <LinearLayout
+                android:id="@+id/indicatorLayout"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center|clip_horizontal"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="150dp"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@+id/productDetailsDescription"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp">
+            </LinearLayout>
 
         </androidx.cardview.widget.CardView>
 
@@ -100,6 +117,7 @@
             android:layout_marginTop="10dp"/>
 
         <LinearLayout
+            android:id="@+id/linearSize"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -109,6 +127,7 @@
             android:layout_marginTop="30dp">
 
             <LinearLayout
+
                 android:layout_width="wrap_content"
                 android:orientation="vertical"
                 android:layout_height="wrap_content"
@@ -127,10 +146,111 @@
                     android:id="@+id/rvSize"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
+
             </LinearLayout>
 
+
         </LinearLayout>
+
+        <View
+            android:id="@+id/lineLine"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@color/g_line"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearSize"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="10dp"/>
+
+        <RelativeLayout
+            android:id="@+id/quantityLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/lineLine"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:id="@+id/quantityLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_light"
+                android:text="Quantity"
+                android:textSize="24sp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginEnd="10dp"
+                android:layout_toLeftOf="@id/quantityButtonsLy"/>
+<LinearLayout
+    android:id="@+id/quantityButtonsLy"
+    android:layout_alignParentRight="true"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/btnDecrease"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:text="-"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:background="@drawable/btn_default"
+        android:gravity="center"
+        android:layout_centerVertical="true" />
+
+    <TextView
+        android:id="@+id/tvQuantity"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:text="1"
+        android:textSize="18sp"
+        android:gravity="center"
+        android:layout_centerVertical="true"
+        android:maxWidth="40dp"/>
+
+    <TextView
+        android:id="@+id/btnIncrease"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:text="+"
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        android:background="@drawable/btn_default"
+        android:gravity="center"
+        android:layout_centerVertical="true" />
+
+</LinearLayout>
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/lineLineLine"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@color/g_line"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/quantityLayout"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="10dp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.core.widget.NestedScrollView>
+    <TextView
+        android:id="@+id/buttonAddtoCart"
+        android:layout_width="match_parent"
+        android:text="Add to cart"
+        android:textSize="18sp"
+        android:layout_height="55dp"
+        android:layout_margin="10dp"
+        style="@style/buttonAddtoCart">
+    </TextView>
+
+</FrameLayout>

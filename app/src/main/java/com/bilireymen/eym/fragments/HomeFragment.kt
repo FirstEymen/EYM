@@ -2,46 +2,49 @@ package com.bilireymen.eym.fragments
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bilireymen.eym.EYMAplication
 import com.bilireymen.eym.ProductDetailsActivity
 import com.bilireymen.eym.R
-import com.bilireymen.eym.ShoppingActivity
 import com.bilireymen.eym.adapter.CarouselRvAdapter
 import com.bilireymen.eym.adapter.GridRvAdapter
 import com.bilireymen.eym.adapter.HorizontalRvItemAdapter
 import com.bilireymen.eym.databinding.FragmentHomeBinding
-import com.bilireymen.eym.eventbus.ProductListReceived
+import com.bilireymen.eym.models.Category
 import com.bilireymen.eym.models.Product
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
-
-
-
+import com.google.firebase.firestore.FirebaseFirestore
 
 class HomeFragment:Fragment(R.layout.fragment_home) {
+    private lateinit var firestore: FirebaseFirestore
+    var productArrayList:ArrayList<Product> = ArrayList()
     private lateinit var binding:FragmentHomeBinding
     private lateinit var adapterHorizontal: HorizontalRvItemAdapter
     private lateinit var adapterCarousel: CarouselRvAdapter
     private lateinit var adapterGrid: GridRvAdapter
+
 
     override fun onResume() {
         super.onResume()
     }
     override fun onStart() {
         super.onStart()
-        EventBus.getDefault().register(this)
-    }
 
+    }
     override fun onStop() {
         super.onStop()
-        EventBus.getDefault().unregister(this)
     }
 
     override fun onCreateView(
@@ -50,21 +53,21 @@ class HomeFragment:Fragment(R.layout.fragment_home) {
         savedInstanceState: Bundle?
     ): View? {
 
-        binding=FragmentHomeBinding.inflate(layoutInflater)
+        binding = FragmentHomeBinding.inflate(layoutInflater)
 
+        firestore = FirebaseFirestore.getInstance()
 
-
+        getData()
         horizontalRvAdapter()
         carouselRvAdapter()
         gridRvAdapter()
 
-
         return binding.root
-
     }
 
+
     private fun horizontalRvAdapter(){
-        adapterHorizontal = HorizontalRvItemAdapter(requireContext(), (activity as ShoppingActivity).productArrayList ?: arrayListOf())
+        adapterHorizontal = HorizontalRvItemAdapter(requireContext(), productArrayList ?: arrayListOf())
         binding.horizontalRv.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.horizontalRv.adapter = adapterHorizontal
 
@@ -75,10 +78,11 @@ class HomeFragment:Fragment(R.layout.fragment_home) {
                 startActivity(intent)
             }
         })
+
     }
 
     private fun carouselRvAdapter(){
-        adapterCarousel = CarouselRvAdapter(requireContext(), (activity as ShoppingActivity).productArrayList ?: arrayListOf())
+        adapterCarousel = CarouselRvAdapter(requireContext(), productArrayList ?: arrayListOf())
         binding.carouselRv.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
        binding.carouselRv.adapter=adapterCarousel
        binding.carouselRv.apply {
@@ -96,7 +100,7 @@ class HomeFragment:Fragment(R.layout.fragment_home) {
     }
 
     private fun gridRvAdapter(){
-        adapterGrid = GridRvAdapter(requireContext(), (activity as ShoppingActivity).productArrayList ?: arrayListOf())
+        adapterGrid = GridRvAdapter(requireContext(), productArrayList ?: arrayListOf())
         binding.gridRV.layoutManager = GridLayoutManager(requireContext(), 2)
         binding.gridRV.adapter = adapterGrid
 
@@ -111,13 +115,43 @@ class HomeFragment:Fragment(R.layout.fragment_home) {
 
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onMessageEvent(event: ProductListReceived?) {
-        horizontalRvAdapter()
-        carouselRvAdapter()
-        gridRvAdapter()
+    private fun getData(){
+        firestore.collection("Products")
+            .get()
+            .addOnSuccessListener { result->
+                for (document in result) {
+                    val data: Map<String, Any> = document.data
+                    val id = data["id"] as String?
+                    val name = data["name"] as String
+                    val price = data["price"] as Double
+                    val offerPercentage = data["offerPercentage"] as Double
+                    val description = data["description"] as String
+                    val sizes = data["sizes"] as List<String>
+                    val images = data["images"] as ArrayList<String>
+                    val category: Category?=null
+                    var arrayList=ArrayList<String>()
+                    arrayList.addAll(images)
+                    val product = Product(id, name, price, offerPercentage, description, sizes, arrayList,category)
+                    productArrayList.add(product)
+                }
+                binding.horizontalRv.adapter!!.notifyDataSetChanged()
+                binding.carouselRv.adapter!!.notifyDataSetChanged()
+                binding.gridRV.adapter!!.notifyDataSetChanged()
+
+            }
+            .addOnFailureListener {
+                val builder =
+                    AlertDialog.Builder(ContextThemeWrapper(activity, R.style.AlertDialogCustom))
+                builder.setTitle("Alert!!")
+                builder.setMessage("An error occurred")
+                builder.setPositiveButton(android.R.string.yes) { dialog, which ->
+                    Toast.makeText(
+                       EYMAplication.appContext,
+                        android.R.string.yes, Toast.LENGTH_SHORT
+                    ).show()
+                }
+                builder.show()
+            }
     }
-
-
 
 }

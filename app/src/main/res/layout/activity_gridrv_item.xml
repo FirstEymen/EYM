@@ -1,80 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:padding="10dp"
     android:layout_height="wrap_content"
     android:background="@color/g_card_background">
 
-        <ImageView
-            android:id="@+id/img_gridRv"
-            android:layout_width="match_parent"
-            android:layout_height="108dp"
-            android:scaleType="centerCrop"/>
+    <ImageView
+        android:id="@+id/img_gridRv"
+        android:layout_width="match_parent"
+        android:layout_height="108dp"
+        android:scaleType="centerCrop"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:orientation="vertical">
-        <LinearLayout
-            android:id="@+id/linear_product_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/gridRvName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_light"
-                android:hint="@string/Name"
-                android:textColor="@color/black"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:gravity="center"
-                android:layout_weight="1"/>
-
-            <ImageView
-                android:id="@+id/img_favorite_grid"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:scaleType="centerCrop"
-                android:padding="3dp"
-                android:background="@drawable/icon_background"
-                android:src="@drawable/ic_favorite"/>
-
-
-        </LinearLayout>
-
-
-<LinearLayout
-    android:layout_width="match_parent"
-    android:orientation="horizontal"
-    android:gravity="center"
-    android:layout_height="wrap_content">
+        android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/gridRvOldPrice"
+            android:id="@+id/gridRvName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/sf_pro_display"
-            android:hint="@string/Price"
+            android:fontFamily="@font/poppins_light"
+            android:hint="@string/Name"
             android:textColor="@color/black"
-            android:textSize="12sp"
-          />
+            android:textSize="14sp"
+            android:layout_marginTop="3dp"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:layout_weight="1"/>
 
-        <TextView
-            android:id="@+id/gridRvPrice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/sf_pro_display"
-            android:hint="@string/OfferPercentage"
-            android:layout_marginStart="10dp"
-            android:textColor="@color/black"
-            android:textSize="12sp"/>
-</LinearLayout>
-
+        <ImageView
+            android:id="@+id/img_favorite_grid"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:scaleType="centerCrop"
+            android:padding="3dp"
+            android:layout_marginTop="3dp"
+            android:background="@drawable/icon_background"
+            android:src="@drawable/ic_favorite"/>
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/gridRvOldPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fontFamily="@font/sf_pro_display"
+        android:hint="@string/OfferPercentage"
+        android:layout_marginStart="10dp"
+        android:textColor="@color/black"
+        android:textSize="12sp"/>
+
+    <TextView
+        android:id="@+id/gridRvPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/sf_pro_display"
+        android:layout_gravity="center"
+        android:layout_marginStart="10dp"
+        android:hint="@string/OfferPercentage"
+        android:textColor="@color/black"
+        android:textSize="12sp"/>
 </LinearLayout>

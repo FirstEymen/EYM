@@ -8,6 +8,7 @@ import android.content.SharedPreferences
 
 
 class CommonFunctions {
+
     companion object{
         fun getFavoriteProductList():HashSet<String>{
 

@@ -12,7 +12,10 @@ import com.bilireymen.eym.R
 import com.bilireymen.eym.models.Product
 import com.bumptech.glide.Glide
 
-class HorizontalRvItemAdapter(private val context: Context, private val productArrayList: ArrayList<Product>,private var onItemClickListener: OnItemClickListener? = null): RecyclerView.Adapter<HorizontalRvItemAdapter.HorizontalHolder>(){
+class HorizontalRvItemAdapter(private val context: Context,
+                              private var productArrayList: ArrayList<Product>,
+                              private var onItemClickListener: OnItemClickListener? = null): RecyclerView.Adapter<HorizontalRvItemAdapter.HorizontalHolder>(){
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HorizontalHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.activity_horizontalrv_item, parent, false)

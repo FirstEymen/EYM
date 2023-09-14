@@ -14,6 +14,7 @@ import com.bumptech.glide.request.target.FixedSizeDrawable
 class SizesAdapter : RecyclerView.Adapter<SizesAdapter.SizesViewHolder>() {
 
     private var selectedPosition= -1
+    open var selectedSize:String?=null
 
     inner class SizesViewHolder(private val binding:SizeItemBinding):
         ViewHolder(binding.root){
@@ -61,6 +62,7 @@ class SizesAdapter : RecyclerView.Adapter<SizesAdapter.SizesViewHolder>() {
             selectedPosition=holder.adapterPosition
             notifyItemChanged(selectedPosition)
             onItemClick?.invoke(size)
+            selectedSize=differ.currentList.get(position)
         }
     }
 

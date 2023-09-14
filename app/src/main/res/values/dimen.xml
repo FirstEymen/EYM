@@ -2,4 +2,11 @@
 <resources>
     <dimen name="indicator_size">16dp</dimen>
     <dimen name="indicator_margin">8dp</dimen>
+    <dimen name="buttonCorners">8dp</dimen>
+    <dimen name="mediumButtonWidth">200dp</dimen>
+    <dimen name="mediumButtonHeight">60dp</dimen>
+    <dimen name="edittextHeight">60dp</dimen>
+
+
+
 </resources>

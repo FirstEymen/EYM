@@ -14,7 +14,9 @@ import com.bilireymen.eym.R
 import com.bilireymen.eym.models.Product
 import com.bumptech.glide.Glide
 
-class GridRvAdapter(private val context: Context, private val productArrayList: ArrayList<Product>,private var onItemClickListener: OnItemClickListener? = null): RecyclerView.Adapter<GridRvAdapter.GridHolder>(){
+class GridRvAdapter(private val context: Context,
+                    private var productArrayList: ArrayList<Product>,
+                    private var onItemClickListener: OnItemClickListener? = null): RecyclerView.Adapter<GridRvAdapter.GridHolder>(){
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GridHolder {
