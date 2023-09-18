@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Arkaplan rengi (basıldığında farklı bir renk kullanabilirsiniz) -->
+    <solid android:color="@color/g_blue"/> <!-- Örneğin, daha koyu bir mavi renk -->
+
+    <!-- Köşeleri yuvarlatma (isteğe bağlı) -->
+    <corners android:radius="8dp"/>
+
+    <!-- Kenarlık rengi ve kalınlığı (isteğe bağlı) -->
+    <stroke
+        android:width="2dp"
+        android:color="@color/g_blue"/> <!-- Örneğin, daha koyu bir mavi renk ve 2dp kalınlık -->
+</shape>

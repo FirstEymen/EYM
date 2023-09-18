@@ -55,6 +55,7 @@ android {
 }
 
 dependencies {
+    implementation 'com.google.android.gms:play-services-analytics-impl:18.0.3'
     apply plugin :"kotlin-kapt"
     implementation 'androidx.core:core-ktx:1.8.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
@@ -97,8 +98,12 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment-ktx:2.4.1'
     implementation 'androidx.navigation:navigation-ui-ktx:2.4.1'
     implementation "android.arch.lifecycle:extensions:1.1.0"
+    implementation("org.greenrobot:eventbus:3.3.1")
+    implementation 'com.github.sparrow007:carouselrecyclerview:1.2.6'
 
-
+    implementation 'com.google.firebase:firebase-auth:21.1.0'
+    implementation 'com.google.code.gson:gson:2.8.7'
+    implementation "org.mindrot:jbcrypt:0.4"
 
 
 
