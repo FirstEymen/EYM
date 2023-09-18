@@ -1,6 +1,9 @@
 package com.bilireymen.eym
 
+
+import com.bilireymen.eym.models.Address
 import com.bilireymen.eym.models.User
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 
 // Firestore veritabanına yeni kullanıcıyı eklemek için kullanılacak sınıf
@@ -29,7 +32,7 @@ class FirestoreHelper {
             lastName = lastName,
             phone = phone,
             email = email,
-            password = password // Kullanıcı parolasını ekleyin
+            password = password
         )
 
         usersCollection.document(newUserId).set(newUser)
@@ -42,32 +45,27 @@ class FirestoreHelper {
                 onFailure(e)
             }
     }
-    // Kullanıcı giriş işlemini kontrol eden fonksiyon
+
     fun loginUser(
         email: String,
         password: String,
         onSuccess: (User?) -> Unit,
         onFailure: (Exception) -> Unit
     ) {
-        // Veri doğrulama işlemleri burada yapılabilir
-        // Firestore'da kullanıcıyı e-posta adresine göre sorgula
+
         usersCollection.whereEqualTo("email", email)
-            .whereEqualTo("password", password)
             .get()
             .addOnSuccessListener { querySnapshot ->
                 if (!querySnapshot.isEmpty) {
-                    // E-posta ve şifreye sahip kullanıcı bulundu
-                    // İlgili kullanıcının bilgilerini alabilirsiniz
                     val user = querySnapshot.documents[0].toObject(User::class.java)
                     onSuccess(user)
                 } else {
-                    // E-posta ve şifreye sahip kullanıcı bulunamadı
-                    onFailure(Exception("Kullanıcı bulunamadı"))
+                    onFailure(Exception("User not found"))
                 }
             }
             .addOnFailureListener { e ->
-                // Sorgu sırasında hata oluştu
                 onFailure(e)
             }
     }
+
 }

@@ -9,6 +9,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import org.mindrot.jbcrypt.BCrypt
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -60,13 +61,16 @@ class RegisterActivity : AppCompatActivity() {
                 emailTextInputLayout.error = null
                 passwordTextInputLayout.error = null
 
+                val hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt())
+
+
                 // Veri doğrulama işlemlerini geçtiğinizden emin olduktan sonra Firestore'a kaydı yapabilirsiniz.
                 firestoreHelper.registerUser(
                     firstName,
                     lastName,
                     phone,
                     email,
-                    password,
+                    hashedPassword,
                     { userId ->
                         val builder =
                             AlertDialog.Builder(ContextThemeWrapper(this, R.style.AlertDialogCustom))
@@ -149,4 +153,7 @@ class RegisterActivity : AppCompatActivity() {
         val phonePattern = Regex("^(\\+\\d{1,3}[- ]?)?\\d{10}\$")
         return phonePattern.matches(phone)
     }
+
+
+
 }

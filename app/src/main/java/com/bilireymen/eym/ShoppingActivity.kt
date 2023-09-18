@@ -1,8 +1,6 @@
 package com.bilireymen.eym
 
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -11,11 +9,7 @@ import com.bilireymen.eym.databinding.ActivityShoppingBinding
 import com.bilireymen.eym.fragments.HomeFragment
 import com.bilireymen.eym.fragments.ProfileFragment
 import com.bilireymen.eym.fragments.SearchFragment
-import com.bilireymen.eym.models.Adress
-import com.bilireymen.eym.models.User
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.firebase.auth.FirebaseAuth
-import com.google.gson.Gson
 
 class ShoppingActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
 

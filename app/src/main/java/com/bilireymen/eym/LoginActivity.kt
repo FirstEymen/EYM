@@ -1,21 +1,14 @@
 package com.bilireymen.eym
 
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Patterns
-import android.view.ContextThemeWrapper
 import android.widget.Button
-import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.bilireymen.eym.fragments.ProfileFragment
-import com.bilireymen.eym.models.User
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.gson.Gson
+import org.mindrot.jbcrypt.BCrypt
 
 class LoginActivity : AppCompatActivity() {
 
@@ -51,16 +44,21 @@ class LoginActivity : AppCompatActivity() {
                 firestoreHelper.loginUser(email, password,
                     onSuccess = { user ->
                         if (user != null) {
+                            val hashedPassword = BCrypt.hashpw(password, user.password) // Firestore'dan alınan hash ile karşılaştır
+                            if (hashedPassword == user.password) {
+                                // Parola doğru, giriş yapabilirsiniz
+                                Utils.saveUserDataToSharedPreferences(this@LoginActivity, user)
+                                val app = EYMAplication.getInstance()
+                                app.user = user
 
-                            Utils.saveUserDataToSharedPreferences(this@LoginActivity, user)
-                            val app = EYMAplication.getInstance()
-                            app.user = user
-
-                            val intent = Intent(this@LoginActivity, ShoppingActivity::class.java)
-                            startActivity(intent)
-                            finish()
+                                val intent = Intent(this@LoginActivity, ShoppingActivity::class.java)
+                                startActivity(intent)
+                                finish()
+                            } else {
+                                showPasswordError("Invalid email or password")
+                            }
                         } else {
-                            showEmailError("Invalid email or password")
+                            showPasswordError("Invalid email or password")
                         }
                     },
                     onFailure = { e ->
@@ -71,8 +69,8 @@ class LoginActivity : AppCompatActivity() {
                 if (!isValidEmail(email)) {
                     showEmailError("Invalid email")
                 }
-                if (!isValidPassword(password)) {
-                    showPasswordError("Invalid password")
+                if (password.isEmpty()) {
+                    showPasswordError("Password cannot be empty")
                 }
             }
         }
