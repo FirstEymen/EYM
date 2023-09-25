@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns
 import android.widget.Button
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -73,6 +74,12 @@ class LoginActivity : AppCompatActivity() {
                     showPasswordError("Password cannot be empty")
                 }
             }
+        }
+
+        val forgotPasswordLink = findViewById<TextView>(R.id.forgotPasswordLink)
+        forgotPasswordLink.setOnClickListener {
+            val intent = Intent(this@LoginActivity, ForgotPasswordActivity::class.java)
+            startActivity(intent)
         }
     }
 

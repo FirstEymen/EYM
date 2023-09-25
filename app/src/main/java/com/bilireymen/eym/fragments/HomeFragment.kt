@@ -128,7 +128,7 @@ class HomeFragment:Fragment(R.layout.fragment_home) {
                     val description = data["description"] as String
                     val sizes = data["sizes"] as List<String>
                     val images = data["images"] as ArrayList<String>
-                    val category: Category?=null
+                    val category=Category.categoryHashMapToCategory((data["category"] as HashMap<String,Any>))
                     var arrayList=ArrayList<String>()
                     arrayList.addAll(images)
                     val product = Product(id, name, price, offerPercentage, description, sizes, arrayList,category)

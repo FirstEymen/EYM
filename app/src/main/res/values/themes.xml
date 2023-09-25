@@ -97,6 +97,12 @@
         <item name="android:fontFamily">@font/poppins_light</item>
     </style>
 
+    <!-- Diyalog açılma animasyonu -->
+    <style name="DialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/slide_in_from_top</item>
+        <item name="android:windowExitAnimation">@anim/slide_out_to_top</item>
+    </style>
+
 
     <dimen name="h4TextSize">35sp</dimen>
     <dimen name="h2TextSize">17sp</dimen>

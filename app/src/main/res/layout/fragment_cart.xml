@@ -87,6 +87,7 @@
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
         android:text="CHECKOUT"
-        android:textSize="18sp"></TextView>
+        android:textSize="18sp">
+    </TextView>
 
 </RelativeLayout>

@@ -12,4 +12,14 @@ import java.io.Serializable
         this.images=images
     }
     constructor() {}
+
+     companion object{
+         fun categoryHashMapToCategory(hashMap:HashMap<String,Any>):Category{
+             var category:Category= Category()
+             category.id=hashMap["id"] as String
+             category.name=hashMap["name"] as String
+             category.images=hashMap["images"] as ArrayList<String>
+             return category
+         }
+     }
 }

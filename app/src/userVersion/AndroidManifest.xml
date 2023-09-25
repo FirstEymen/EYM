@@ -13,6 +13,17 @@
         android:theme="@style/Theme.EYM"
         tools:targetApi="31">
 
+        <activity android:name=".OrderActivity"
+            android:exported="true">
+        </activity>
+
+        <activity android:name=".CheckoutActivity"
+            android:exported="true">
+        </activity>
+
+        <activity android:name=".ForgotPasswordActivity"
+            android:exported="true">
+        </activity>
 
         <activity android:name=".AddressListActivity"
             android:exported="true">

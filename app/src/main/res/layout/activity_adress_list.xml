@@ -40,7 +40,21 @@
         android:layout_gravity="bottom|end"
         android:src="@drawable/address_add"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="20dp">
+        android:layout_marginBottom="80dp">
     </ImageView>
+
+    <TextView
+        android:id="@+id/goToCartBtn"
+        style="@style/buttonAddtoCart"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:text="Use this Address"
+        android:textSize="18sp">
+    </TextView>
 
 </FrameLayout>

@@ -66,10 +66,11 @@ class Utils {
             // JSON formatındaki kullanıcı verisini SharedPreferences'e kaydedin
             editor.putString("userJson", userJson)
             editor.apply()
+            EYMAplication.getInstance().user=user
         }
 
         // Kullanıcı bilgilerini SharedPreferences'den almak için bu kodu kullanabilirsiniz
-        fun getUserFromSharedPreferences(context: Context): User? {
+            fun getUserFromSharedPreferences(context: Context): User? {
             val sharedPreferences = context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
             val gson = Gson()
             val userJson = sharedPreferences.getString("userJson", null)
@@ -84,6 +85,7 @@ class Utils {
             val editor = sharedPreferences.edit()
             editor.remove("userJson")
             editor.apply()
+            EYMAplication.getInstance().user=null
         }
 
 

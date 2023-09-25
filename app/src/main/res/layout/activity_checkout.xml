@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="REVIEW"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:fontFamily="@font/poppins_thin"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp" />
+
+        <View
+            android:id="@+id/lineLocatıon"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/g_line"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/checkoutProductRv"
+            android:layout_width="match_parent"
+            android:layout_marginTop="5dp"
+            android:layout_height="wrap_content">
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/checkoutAddressRv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </androidx.recyclerview.widget.RecyclerView>
+    </LinearLayout>
+
+    <View
+        android:id="@+id/subView"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_above="@id/subLinear"
+        android:background="@color/g_line"/>
+
+    <LinearLayout
+        android:id="@+id/subLinear"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:gravity="end"
+        android:layout_marginEnd="28dp"
+        android:layout_above="@id/completeOrderBtn"
+        android:layout_height="40dp">
+
+        <TextView
+            android:id="@+id/subtotalTextCheckout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SUBTOTAL"
+            android:textSize="15sp"
+            android:layout_marginTop="15dp"
+            android:fontFamily="@font/poppins_light">
+        </TextView>
+
+        <TextView
+            android:id="@+id/subtotalPriceCheckout"
+            android:layout_width="wrap_content"
+            android:text="$550"
+            android:fontFamily="@font/poppins_light"
+            android:textSize="15sp"
+            android:textColor="@color/red"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="10dp"
+            android:layout_height="wrap_content">
+        </TextView>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/completeOrderBtn"
+        style="@style/buttonAddtoCart"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:text="Complete Order"
+        android:textSize="18sp">
+    </TextView>
+
+</RelativeLayout>

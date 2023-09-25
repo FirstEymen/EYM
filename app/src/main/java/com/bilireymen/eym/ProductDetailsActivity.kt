@@ -7,10 +7,11 @@ import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.StrikethroughSpan
 import android.view.ContextThemeWrapper
+import android.view.LayoutInflater
+import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -21,6 +22,7 @@ import com.bilireymen.eym.adapter.ViewPager2Images
 import com.bilireymen.eym.databinding.ActivityProductDetailsBinding
 import com.bilireymen.eym.models.CartProduct
 import com.bilireymen.eym.models.Product
+import com.bilireymen.eym.models.User
 import com.google.firebase.firestore.FirebaseFirestore
 
 class ProductDetailsActivity:AppCompatActivity() {
@@ -36,7 +38,7 @@ class ProductDetailsActivity:AppCompatActivity() {
     private lateinit var btnIncrease: TextView
     private  var product: Product?=null
     private lateinit var firebaseFirestore: FirebaseFirestore
-
+    private var user: User? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +46,10 @@ class ProductDetailsActivity:AppCompatActivity() {
         firebaseFirestore= FirebaseFirestore.getInstance()
         binding = ActivityProductDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        EYMAplication.getUserId()
+
+        user = Utils.getUserFromSharedPreferences(this)
 
         product = intent.getSerializableExtra("product") as? Product
 
@@ -108,37 +114,106 @@ class ProductDetailsActivity:AppCompatActivity() {
 
             val androidId = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
 
-            if (product != null) {
+            if (user != null) { // Kullanıcı giriş yapmışsa Firestore kullan
+                val userId = EYMAplication.getUserId()
                 var selectedSize: String? = sizesAdapter.selectedSize
-                val cartProduct = CartProduct(product!!, currentQuantity, selectedSize)
-                firebaseFirestore.collection("Cart").document(androidId!!).collection("Cart Products")
-                    .document(product!!.id!!).set(cartProduct).addOnSuccessListener {
+                val cartProduct = CartProduct(product!!, currentQuantity, selectedSize.toString())
+                val cartProductMap = hashMapOf(
+                    "product" to cartProduct.product,
+                    "quantity" to cartProduct.quantity,
+                    "selectedSize" to cartProduct.selectedSize
+                )
+                val userCartCollection = firebaseFirestore.collection("Cart").document(userId!!)
+                    .collection("Cart Products")
 
-                    val builder = AlertDialog.Builder(ContextThemeWrapper(this, R.style.AlertDialogCustom))
-                    builder.setTitle("Notification")
-                    builder.setMessage("The product has been added to the cart, would you like to go to the cart?")
-                    builder.setPositiveButton(android.R.string.yes) { dialog, which ->
-                        // "Evet" düğmesine basıldığında yapılacak işlemler
-                        Toast.makeText(
-                            applicationContext,
-                            android.R.string.yes, Toast.LENGTH_SHORT
-                        ).show()
+                userCartCollection.document(product!!.id!!).set(cartProductMap)
+                    .addOnSuccessListener {
 
-                        val intent = Intent(this@ProductDetailsActivity, CartActivity::class.java)
-                        startActivity(intent)
+                        val customView = LayoutInflater.from(this@ProductDetailsActivity).inflate(R.layout.custom_alert_dialog2, null)
+                        val alertDialog = AlertDialog.Builder(this@ProductDetailsActivity)
+                            .setView(customView)
+                            .create()
+
+                        val warningName = customView.findViewById<TextView>(R.id.warningName)
+                        val warningDescription = customView.findViewById<TextView>(R.id.warningDescription)
+                        val warningBtn = customView.findViewById<TextView>(R.id.warningBtn)
+                        val warningBtn2 = customView.findViewById<TextView>(R.id.warningBtn2)
+
+                        warningName.text = "Notification"
+                        warningDescription.text = "The product has been added to the cart, would you like to go to the cart?"
+
+                        warningBtn.text = "CANCEL"
+                        warningBtn.setOnClickListener {
+                            customView.startAnimation(AnimationUtils.loadAnimation(this@ProductDetailsActivity, R.anim.bounce))
+                            alertDialog.dismiss()
+                        }
+
+                        warningBtn2.text = "OK"
+                        warningBtn2.setOnClickListener {
+                            customView.startAnimation(AnimationUtils.loadAnimation(this@ProductDetailsActivity, R.anim.bounce))
+                            alertDialog.dismiss()
+
+                            val intent = Intent(this@ProductDetailsActivity, CartActivity::class.java)
+                            startActivity(intent)
+                        }
+
+                        alertDialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
+                        alertDialog.show()
                     }
-                    builder.setNegativeButton(android.R.string.no) { dialog, which ->
-                        // "Hayır" düğmesine basıldığında yapılacak işlemler
-                        Toast.makeText(
-                            applicationContext,
-                            android.R.string.no, Toast.LENGTH_SHORT
-                        ).show()
+                    .addOnFailureListener { e ->
+                        // Hata durumunda yapılacak işlemler
                     }
-                    builder.show()
-                }
+            } else {
+                var selectedSize: String? = sizesAdapter.selectedSize
+                // Kullanıcı giriş yapmamışsa Android ID ile ekle
+                val cartProduct = CartProduct(product!!, currentQuantity, selectedSize!!)
+                val cartProductMap = hashMapOf(
+                    "product" to cartProduct.product,
+                    "quantity" to cartProduct.quantity,
+                    "selectedSize" to cartProduct.selectedSize
+                )
+                val cartCollection = firebaseFirestore.collection("Cart").document(androidId)
+                    .collection("Cart Products")
+
+                cartCollection.document(product!!.id!!).set(cartProductMap)
+                    .addOnSuccessListener {
+
+                        val customView = LayoutInflater.from(this@ProductDetailsActivity).inflate(R.layout.custom_alert_dialog2, null)
+                        val alertDialog = AlertDialog.Builder(this@ProductDetailsActivity)
+                            .setView(customView)
+                            .create()
+
+                        val warningName = customView.findViewById<TextView>(R.id.warningName)
+                        val warningDescription = customView.findViewById<TextView>(R.id.warningDescription)
+                        val warningBtn = customView.findViewById<TextView>(R.id.warningBtn)
+                        val warningBtn2 = customView.findViewById<TextView>(R.id.warningBtn2)
+
+                        warningName.text = "Notification"
+                        warningDescription.text = "The product has been added to the cart, would you like to go to the cart?"
+
+                        warningBtn.text = "CANCEL"
+                        warningBtn.setOnClickListener {
+                            customView.startAnimation(AnimationUtils.loadAnimation(this@ProductDetailsActivity, R.anim.bounce))
+                            alertDialog.dismiss()
+                        }
+
+                        warningBtn2.text = "OK"
+                        warningBtn2.setOnClickListener {
+                            customView.startAnimation(AnimationUtils.loadAnimation(this@ProductDetailsActivity, R.anim.bounce))
+                            alertDialog.dismiss()
+
+                            val intent = Intent(this@ProductDetailsActivity, CartActivity::class.java)
+                            startActivity(intent)
+                        }
+
+                        alertDialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
+                        alertDialog.show()
+                    }
+                    .addOnFailureListener { e ->
+                        // Hata durumunda yapılacak işlemler
+                    }
             }
         }
-
 
     }
 
@@ -185,4 +260,30 @@ class ProductDetailsActivity:AppCompatActivity() {
         }
     }
 
+
+    /*fun showCustomAlertDialog() {
+        val customView = LayoutInflater.from(this).inflate(R.layout.custom_alert_dialog2, null)
+        val alertDialog = AlertDialog.Builder(this).setView(customView).create()
+
+        // Özel AlertDialog içindeki elemanları tanımla
+        val warningName = customView.findViewById<TextView>(R.id.warningName)
+        val warningDescription = customView.findViewById<TextView>(R.id.warningDescription)
+        val warningBtn = customView.findViewById<TextView>(R.id.warningBtn)
+        val warningBtn2 = customView.findViewById<TextView>(R.id.warningBtn2)
+
+        // TextView'e metin atama
+        warningName.text = "Warning"
+        warningDescription.text="Email field cannot beempty"
+        // Butona tıklama işlevi ekle
+        warningBtn.setOnClickListener {
+            alertDialog.dismiss() // AlertDialog'ı kapat
+        }
+        warningBtn2.setOnClickListener {
+            alertDialog.dismiss() // AlertDialog'ı kapat
+        }
+
+        alertDialog.show()
+    }
+
+     */
 }

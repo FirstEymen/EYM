@@ -15,6 +15,12 @@ import com.bilireymen.eym.models.Address
 class AddressItemAdapter(private val context: Context, private val addressList: List<Address>) :
     RecyclerView.Adapter<AddressItemAdapter.AddressViewHolder>() {
 
+    fun getSelectedAddress(): Address? {
+        if (selectedAddressPosition != -1 && selectedAddressPosition < addressList.size) {
+            return addressList[selectedAddressPosition]
+        }
+        return null
+    }
     var selectedAddressPosition = -1
         private set
 

@@ -1,10 +1,17 @@
 package com.bilireymen.eym.models
 
-class CartProduct(
-    val product: Product,
-    var quantity: Int?=null,
-    val selectedSize: String?=null
+import java.io.Serializable
 
-){
-    constructor() : this(Product(),1,null)
+class CartProduct:Serializable{
+    lateinit var product: Product
+    var quantity: Int?=null
+    var selectedSize: String?=null
+
+    constructor(product: Product,quantity:Int,selectedSize:String){
+        this.product=product
+        this.quantity=quantity
+        this.selectedSize=selectedSize
+    }
+
+    constructor(){}
 }

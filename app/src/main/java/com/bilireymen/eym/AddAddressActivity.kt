@@ -1,5 +1,7 @@
 package com.bilireymen.eym
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
@@ -7,15 +9,16 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bilireymen.eym.models.Address
 import com.bilireymen.eym.models.User
 import com.google.android.material.textfield.TextInputEditText
-import com.google.firebase.firestore.CollectionReference
+import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.firestore.FirebaseFirestore
-import java.util.UUID
+
 
 class AddAddressActivity : AppCompatActivity() {
 
     private lateinit var addAddressName: TextInputEditText
     private lateinit var addAddressAddress: TextInputEditText
     private lateinit var buttonSaveAddress: Button
+    private lateinit var addAddressNameLayout:TextInputLayout
 
     private val firestore = FirebaseFirestore.getInstance()
     private val usersCollection = firestore.collection("Users")
@@ -27,23 +30,23 @@ class AddAddressActivity : AppCompatActivity() {
         addAddressName = findViewById(R.id.addAddressName)
         addAddressAddress = findViewById(R.id.addAddressAddress)
         buttonSaveAddress = findViewById(R.id.buttonSaveAddress)
+        addAddressNameLayout=findViewById(R.id.addAddressNameLayout)
 
         buttonSaveAddress.setOnClickListener {
 
-            val userId = Utils.getUserFromSharedPreferences(this)?.id
+            if (EYMAplication.getInstance().user!=null) {
 
-            if (userId != null) {
                 val addressName = addAddressName.text.toString()
                 val addressText = addAddressAddress.text.toString()
 
                 // Yeni bir adres oluştur
                 val newAddress = Address(
-                    name = addressName,
-                    address = addressText
+                    addressName,
+                    addressText
                 )
 
                 // Kullanıcının mevcut adres listesini al
-                usersCollection.document(userId).get()
+                usersCollection.document(EYMAplication.getInstance().user!!.id!!).get()
                     .addOnSuccessListener { documentSnapshot ->
                         if (documentSnapshot.exists()) {
                             val user = documentSnapshot.toObject(User::class.java)
@@ -52,7 +55,7 @@ class AddAddressActivity : AppCompatActivity() {
                                 user.addresses?.add(newAddress)
 
                                 // Adres listesini Firestore'a güncelleyin
-                                usersCollection.document(userId).update("addresses", user.addresses)
+                                usersCollection.document(EYMAplication.getInstance().user!!.id!!).update("addresses", user.addresses)
                                     .addOnSuccessListener {
                                         Toast.makeText(
                                             this@AddAddressActivity,
@@ -78,13 +81,21 @@ class AddAddressActivity : AppCompatActivity() {
                             Toast.LENGTH_SHORT
                         ).show()
                     }
-            } else {
-                Toast.makeText(
-                    this@AddAddressActivity,
-                    "Failed to retrieve user ID.",
-                    Toast.LENGTH_SHORT
-                ).show()
+            } else{
+                val addressName = addAddressName.text.toString()
+                val addressText = addAddressAddress.text.toString()
+
+                val newAddress = Address(
+                    addressName,
+                    addressText
+                )
+                // Intent'e adres bilgilerini ekleyerek geri dön
+                val resultIntent = Intent()
+                resultIntent.putExtra("selectedAddress", newAddress)
+                setResult(Activity.RESULT_OK, resultIntent)
+                finish()
             }
         }
+
     }
 }

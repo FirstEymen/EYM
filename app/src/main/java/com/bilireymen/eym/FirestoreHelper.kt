@@ -1,9 +1,8 @@
 package com.bilireymen.eym
 
 
-import com.bilireymen.eym.models.Address
+
 import com.bilireymen.eym.models.User
-import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 
 // Firestore veritabanına yeni kullanıcıyı eklemek için kullanılacak sınıf
@@ -62,6 +61,44 @@ class FirestoreHelper {
                 } else {
                     onFailure(Exception("User not found"))
                 }
+            }
+            .addOnFailureListener { e ->
+                onFailure(e)
+            }
+    }
+
+    fun findUserByEmail(
+        email: String,
+        onSuccess: (User?) -> Unit,
+        onFailure: (Exception) -> Unit
+    ) {
+        usersCollection.whereEqualTo("email", email)
+            .get()
+            .addOnSuccessListener { querySnapshot ->
+                if (!querySnapshot.isEmpty) {
+                    val user = querySnapshot.documents[0].toObject(User::class.java)
+                    onSuccess(user)
+                } else {
+                    onSuccess(null)
+                }
+            }
+            .addOnFailureListener { e ->
+                onFailure(e)
+            }
+    }
+
+    fun updateUserPassword(
+        userId: String,
+        newPassword: String,
+        onSuccess: () -> Unit,
+        onFailure: (Exception) -> Unit
+    ) {
+        // Şifreyi güncellemek istediğiniz kullanıcının Firestore belgesini alın
+        val userDocument = usersCollection.document(userId)
+
+        userDocument.update("password", newPassword)
+            .addOnSuccessListener {
+                onSuccess()
             }
             .addOnFailureListener { e ->
                 onFailure(e)

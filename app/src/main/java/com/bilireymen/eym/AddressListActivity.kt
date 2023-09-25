@@ -2,7 +2,10 @@ package com.bilireymen.eym
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -10,7 +13,6 @@ import com.bilireymen.eym.adapter.AddressItemAdapter
 import com.bilireymen.eym.models.Address
 import com.bilireymen.eym.models.User
 import com.google.firebase.firestore.FirebaseFirestore
-
 
 class AddressListActivity : AppCompatActivity() {
 
@@ -45,27 +47,47 @@ class AddressListActivity : AppCompatActivity() {
                     val user = documentSnapshot.toObject(User::class.java)
 
                     if (user != null && user.addresses != null) {
+
                         addressList.clear()
                         addressList.addAll(user.addresses)
-
-                        // Kullanıcının seçtiği adres pozisyonunu Firestore veya SharedPreferences'ten alın
                         Utils.getUserSelectedAddressPositionFromDatabaseOrSharedPreferences(
                             this@AddressListActivity,
                             userId
                         ) { selectedPosition ->
                             addressAdapter.setSelectedAddressPosition(selectedPosition)
                         }
-
                         addressAdapter.notifyDataSetChanged()
-
                         userDocument.update("addresses", addressList)
                     }
                 }
             }
         }
+
+        val goToCartBtn = findViewById<TextView>(R.id.goToCartBtn)
+        val fromProfileFragment = intent.getBooleanExtra("fromProfileFragment", false)
+        if (fromProfileFragment) {
+
+            goToCartBtn.visibility = View.GONE
+            goToCartBtn.isEnabled = false
+        } else {
+
+            goToCartBtn.visibility = View.VISIBLE
+            goToCartBtn.isEnabled = true
+        }
+
+        goToCartBtn.setOnClickListener {
+            val selectedAddress = addressAdapter.getSelectedAddress()
+            if (selectedAddress != null) {
+
+                val resultIntent = Intent()
+                resultIntent.putExtra("selectedAddress", selectedAddress)
+                setResult(RESULT_OK, resultIntent)
+                finish()
+            } else {
+                Toast.makeText(this, "Please select an address.", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 }
-
-
 
 

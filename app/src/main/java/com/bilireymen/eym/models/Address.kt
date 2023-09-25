@@ -1,8 +1,20 @@
 package com.bilireymen.eym.models
 
-data class Address(
-    var isDefaultAdress: Boolean = false,
-    var isSelected: Boolean = false,
-    val name: String? = null,
-    val address: String? = null
-)
+import android.os.Parcelable
+import java.io.Serializable
+
+ class Address:Serializable{
+     var isDefaultAdress: Boolean = false
+     var isSelected: Boolean = false
+     var name: String? = null
+     var address: String? = null
+
+     constructor(isDefaultAddress: Boolean,isSelected:Boolean,name: String,address: String){
+         this.isDefaultAdress=isDefaultAddress
+         this.isSelected=isSelected
+         this.name=name
+         this.address=address
+     }
+     constructor(){}
+     constructor(addressName: String, addressText: String)
+ }

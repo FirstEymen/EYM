@@ -62,6 +62,7 @@
                 android:inputType="text"
                 android:textSize="18sp"/>
         </com.google.android.material.textfield.TextInputLayout>
+
     </LinearLayout>
 
     <androidx.appcompat.widget.AppCompatButton

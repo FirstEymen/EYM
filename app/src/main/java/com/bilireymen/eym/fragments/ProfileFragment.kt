@@ -6,18 +6,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.bilireymen.eym.AddressListActivity
+import com.bilireymen.eym.EYMAplication
 import com.bilireymen.eym.IntroductionActivity
+import com.bilireymen.eym.OrderActivity
 import com.bilireymen.eym.R
+import com.bilireymen.eym.ShoppingActivity
 import com.bilireymen.eym.Utils
+import com.bilireymen.eym.models.Order
 
 class ProfileFragment : Fragment() {
 
     private lateinit var tvUserName: TextView
     private lateinit var tvUserEmail: TextView
     private lateinit var signOutButton: TextView
-    private var selectedPosition: Int = -1 // Seçilen pozisyonu tutmak için ekledik
+    private var selectedPosition: Int = -1
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,22 +40,30 @@ class ProfileFragment : Fragment() {
         signOutButton = view.findViewById(R.id.signOutButton)
 
         val user = Utils.getUserFromSharedPreferences(requireContext())
-        // Kullanıcı verilerini görüntüleme
-        if (user != null) {
-            tvUserName.text = user.firstName
+
+        if (EYMAplication.getInstance().user!=null) {
+            tvUserName.text = user!!.firstName
             tvUserEmail.text = user.email
         }
 
-        // Kullanıcının seçili adres pozisyonunu Firestore ve SharedPreferences'ten alın
         Utils.getUserSelectedAddressPositionFromDatabaseOrSharedPreferences(requireContext(), user?.id ?: "") { position ->
             selectedPosition = position
         }
 
         val myAddressProfile = view.findViewById<TextView>(R.id.myAddressProfile)
         myAddressProfile.setOnClickListener {
+
             val intent = Intent(requireContext(), AddressListActivity::class.java)
+            intent.putExtra("fromProfileFragment", true)
             startActivity(intent)
         }
+
+        val myOrdersProfile=view.findViewById<TextView>(R.id.myOrdersProfile)
+        myOrdersProfile.setOnClickListener{
+            val intent=Intent(requireContext(),OrderActivity::class.java)
+            startActivity(intent)
+        }
+
 
         signOutButton.setOnClickListener {
             Utils.clearUserDataFromSharedPreferences(requireContext())

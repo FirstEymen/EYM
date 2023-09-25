@@ -1,20 +1,16 @@
 import android.content.Context
-import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.bilireymen.eym.R
-import com.bilireymen.eym.fragments.CartFragment
 import com.bilireymen.eym.models.CartProduct
 import com.bumptech.glide.Glide
 import com.google.firebase.firestore.FirebaseFirestore
-
 class CartItemAdapter(private val context: Context,
                       val cartProducts: MutableList<CartProduct> = mutableListOf<CartProduct>(),
                       private val firebaseFirestore: FirebaseFirestore,
@@ -53,7 +49,6 @@ class CartItemAdapter(private val context: Context,
             "quantity" to cartProduct.quantity,
             "selectedSize" to cartProduct.selectedSize
         )
-
         // Belgeyi güncelle
         cartItemRef.update(updateData)
             .addOnSuccessListener {
@@ -64,7 +59,6 @@ class CartItemAdapter(private val context: Context,
                     cartProducts.clear()
                     cartProducts.addAll(updatedCartProducts)
                     notifyDataSetChanged()
-
                     cartUpdateListener?.onCartUpdated()
                 }
             }
@@ -129,42 +123,42 @@ class CartItemAdapter(private val context: Context,
                         .document(cartProduct.product.id!!)
 
                     cartItemRef.delete()
-                    .addOnSuccessListener {
-                        // Firebase'den başarıyla kaldırıldığında yerel listeyi güncelle
-                        firebaseDeleteListener?.onDeleteSuccess(position)
-                        // Sepeti güncellemek için updateCartItem işlevini çağırın
-                        val builder = AlertDialog.Builder(context)
-                        builder.setTitle("Successful")
-                        builder.setMessage("The product has been removed from the cart.")
-                        builder.setPositiveButton("Ok") { dialog, which ->
-                            // Kullanıcı Tamam'a tıkladığında yapılacak işlemler
-                            cartProducts.removeAt(position)
-                            notifyDataSetChanged()
-                            cartUpdateListener?.onCartUpdated()
+                        .addOnSuccessListener {
+                            // Firebase'den başarıyla kaldırıldığında yerel listeyi güncelle
+                            firebaseDeleteListener?.onDeleteSuccess(position)
+                            // Sepeti güncellemek için updateCartItem işlevini çağırın
+                            val builder = AlertDialog.Builder(context)
+                            builder.setTitle("Successful")
+                            builder.setMessage("The product has been removed from the cart.")
+                            builder.setPositiveButton("Ok") { dialog, which ->
+                                // Kullanıcı Tamam'a tıkladığında yapılacak işlemler
+                                cartProducts.removeAt(position)
+                                notifyDataSetChanged()
+                                cartUpdateListener?.onCartUpdated()
+                            }
+                            builder.show()
                         }
-                        builder.show()
-                    }
-                    .addOnFailureListener {
-                        val builder = AlertDialog.Builder(context)
-                        builder.setTitle("Unsuccessful")
-                        builder.setMessage("The product could not be removed.")
-                        builder.setPositiveButton("Ok") { dialog, which ->
-                            // Kullanıcı Tamam'a tıkladığında yapılacak işlemler
-                            firebaseDeleteListener?.onDeleteFailure()
+                        .addOnFailureListener {
+                            val builder = AlertDialog.Builder(context)
+
+                            builder.setTitle("Unsuccessful")
+                            builder.setMessage("The product could not be removed.")
+                            builder.setPositiveButton("Ok") { dialog, which ->
+                                // Kullanıcı Tamam'a tıkladığında yapılacak işlemler
+                                firebaseDeleteListener?.onDeleteFailure()
+                            }
+                            builder.show()
                         }
-                        builder.show()
-                    }
+                }
+                builder.setNegativeButton("No") { dialog, _ ->
+                    dialog.dismiss()
+                }
+                builder.show()
             }
-            builder.setNegativeButton("No") { dialog, _ ->
-                dialog.dismiss()
-            }
-            builder.show()
         }
-    }
 
 
     }
-
     override fun getItemCount(): Int {
         return cartProducts.size
     }

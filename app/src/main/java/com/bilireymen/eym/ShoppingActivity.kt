@@ -19,7 +19,10 @@ class ShoppingActivity : AppCompatActivity(), BottomNavigationView.OnNavigationI
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-
+        // Kullanıcıyı al
+        val user = Utils.getUserFromSharedPreferences(this)
+        val app = EYMAplication.getInstance()
+        app.user = user
         binding.bottomNavigation.setOnItemSelectedListener(this)
         binding.bottomNavigation.setSelectedItemId(R.id.homeFragment)
 
@@ -33,12 +36,9 @@ class ShoppingActivity : AppCompatActivity(), BottomNavigationView.OnNavigationI
                 return false
             }
             R.id.profileFragment -> {
-                // Kullanıcıyı al
-                val user = Utils.getUserFromSharedPreferences(this)
-                val app = EYMAplication.getInstance()
-                app.user = user
+
                 // Kullanıcı girişi kontrolü
-                if (user != null) {
+                if (EYMAplication.getInstance().user != null) {
                     val profileFragment = ProfileFragment()
                     replaceFragment(profileFragment)
                     return true
