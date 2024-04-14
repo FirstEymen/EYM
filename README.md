@@ -12,7 +12,7 @@ Proje Ekibi: Abdullah Eymen Bilir
 
 1.Proje Planı:https://github.com/FirstEymen/EYM/blob/master/Proje%20Plan%C4%B1.png
 
-2.Gereksinim Analizi:https://github.com/FirstEymen/EYM/blob/master/Gereksinim%20Analizi%20Sayfas%C4%B1.pdf  ,  
+2.Gereksinim Analizi:https://github.com/FirstEymen/EYM/blob/master/Gereksinim%20Analizi%20Sayfas%C4%B1.pdf  ,  https://github.com/FirstEymen/EYM/blob/master/Ki%C5%9Fisel%20Gereksinim%20Analiz%20Sayfas%C4%B1.pdf
 
 3.Durum Diyagramı:https://github.com/FirstEymen/EYM/blob/master/Kullan%C4%B1m%20Senaryosu%20Diyagram%C4%B1.drawio%20(1).png
 
