@@ -17,4 +17,4 @@ Proje Ekibi: Abdullah Eymen Bilir
 
 3.Durum Diyagramı:https://github.com/FirstEymen/EYM/blob/master/Kullan%C4%B1m%20Senaryosu%20Diyagram%C4%B1.drawio%20(1).png
 
-4.Durum Senaryoları:
+4.Durum Senaryoları:https://github.com/FirstEymen/EYM/blob/master/Durum%20Senaryolar%C4%B1.pdf
