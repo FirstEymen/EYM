@@ -11,3 +11,6 @@ Grup Adı: EYM
 Proje Ekibi: Abdullah Eymen Bilir
 
 1.Proje Planı:https://github.com/FirstEymen/EYM/blob/master/Proje%20Plan%C4%B1.png
+
+2.Gereksinim Analizi:https://github.com/FirstEymen/EYM/blob/master/Gereksinim%20Analizi%20Sayfas%C4%B1.docx , 
+3.
