@@ -9,3 +9,5 @@ Uygulama Adresi: https://www.trendyol.com/
 Grup Adı: EYM
 
 Proje Ekibi: Abdullah Eymen Bilir
+
+1.Proje Planı:
