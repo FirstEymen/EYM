@@ -22,4 +22,4 @@ Proje Ekibi: Abdullah Eymen Bilir
 
 
 
-6.Proje Planı.png
+Proje Planı.png
