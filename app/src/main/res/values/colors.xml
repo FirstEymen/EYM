@@ -11,5 +11,14 @@
     <color name="g_card_background">#FAFDFF</color>
     <color name="g_hint">#666666</color>
     <color name="g_blue">#000DAE</color>
+    <color name="red">#FF1100</color>
+    <color name="g_line">#E9EAEC</color>
+    <color name="g_black">#171717</color>
+    <color name="g_gray700">#FF616161</color>
+    <color name="gray_a">#E8E8E8</color>
+    <color name="gray_b">#FAFAFA</color>
+    <color name="green">#91E391</color>
+    <color name="greena">#79D67E</color>
+
 
 </resources>
