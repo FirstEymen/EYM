@@ -131,11 +131,11 @@ class CartFragment : Fragment(R.layout.fragment_cart), CartItemAdapter.OnCartUpd
             } else {
                 Toast.makeText(requireContext(), "Please select an address.", Toast.LENGTH_SHORT).show()
             }
-        }else if (requestCode==ADDRESS_DETAIL_REQUEST_CODE  && resultCode == Activity.RESULT_OK){
+        }else if (requestCode == ADDRESS_DETAIL_REQUEST_CODE  && resultCode == Activity.RESULT_OK){
             if (data != null && data.hasExtra("selectedAddress")) {
                 val selectedAddress = data.getSerializableExtra("selectedAddress") as Address
                 val intent=Intent(requireContext(),CheckoutActivity::class.java)
-                intent.putExtra("selectedAddress",selectedAddress)
+                intent.putExtra("selectedAddress", selectedAddress)
                 intent.putExtra("cartProducts",cartProducts)
                 startActivity(intent)
             } else {

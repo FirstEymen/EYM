@@ -1,6 +1,6 @@
 package com.bilireymen.eym.models
 
-import android.os.Parcelable
+
 import java.io.Serializable
 
  class Address:Serializable{
@@ -16,5 +16,8 @@ import java.io.Serializable
          this.address=address
      }
      constructor(){}
-     constructor(addressName: String, addressText: String)
+     constructor(addressName: String, addressText: String){
+         this.name=addressName
+         this.address=addressText
+     }
  }

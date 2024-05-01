@@ -33,18 +33,15 @@ class AddAddressActivity : AppCompatActivity() {
         addAddressNameLayout=findViewById(R.id.addAddressNameLayout)
 
         buttonSaveAddress.setOnClickListener {
+            val addressName = addAddressName.text.toString()
+            val addressText = addAddressAddress.text.toString()
+
+            val newAddress = Address(
+                addressName,
+                addressText
+            )
 
             if (EYMAplication.getInstance().user!=null) {
-
-                val addressName = addAddressName.text.toString()
-                val addressText = addAddressAddress.text.toString()
-
-                // Yeni bir adres oluştur
-                val newAddress = Address(
-                    addressName,
-                    addressText
-                )
-
                 // Kullanıcının mevcut adres listesini al
                 usersCollection.document(EYMAplication.getInstance().user!!.id!!).get()
                     .addOnSuccessListener { documentSnapshot ->
@@ -52,6 +49,8 @@ class AddAddressActivity : AppCompatActivity() {
                             val user = documentSnapshot.toObject(User::class.java)
                             if (user != null) {
                                 // Adresleri kullanıcının adres listesine ekleyin
+
+
                                 user.addresses?.add(newAddress)
 
                                 // Adres listesini Firestore'a güncelleyin
@@ -82,13 +81,6 @@ class AddAddressActivity : AppCompatActivity() {
                         ).show()
                     }
             } else{
-                val addressName = addAddressName.text.toString()
-                val addressText = addAddressAddress.text.toString()
-
-                val newAddress = Address(
-                    addressName,
-                    addressText
-                )
                 // Intent'e adres bilgilerini ekleyerek geri dön
                 val resultIntent = Intent()
                 resultIntent.putExtra("selectedAddress", newAddress)

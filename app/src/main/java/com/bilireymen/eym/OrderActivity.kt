@@ -14,6 +14,7 @@ import com.bilireymen.eym.models.CartProduct
 import com.bilireymen.eym.models.Checkout
 import com.bilireymen.eym.models.Order
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 
 class OrderActivity : AppCompatActivity() {
 
@@ -39,6 +40,7 @@ class OrderActivity : AppCompatActivity() {
         firestore.collection("Orders")
             .document(userId)
             .collection("My Orders")
+            .orderBy("time", Query.Direction.DESCENDING)
             .get()
             .addOnSuccessListener { querySnapshot ->
                 val orderList = ArrayList<Order>()

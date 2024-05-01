@@ -8,6 +8,8 @@ class Checkout:Serializable{
     var address: Address?=null
     var userId:String?=null
 
+
+
     constructor(cartProduct: ArrayList<CartProduct>,address: Address,userId: String){
         this.cartProduct=cartProduct
         this.address=address

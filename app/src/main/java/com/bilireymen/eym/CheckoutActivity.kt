@@ -52,15 +52,15 @@ class CheckoutActivity : AppCompatActivity() {
         firestore = FirebaseFirestore.getInstance()
 
         val checkout = Checkout(cartProducts, selectedAddress,EYMAplication.getUserId())
-
         saveCheckoutToFirestore(checkout)
 
         val completeOrderBtn=findViewById<TextView>(R.id.completeOrderBtn)
         completeOrderBtn.setOnClickListener{
             if(EYMAplication.getInstance().user!=null) {
 
-                val order = Order(id = null, checkout)
+                val order = Order(id = null, checkout,System.currentTimeMillis())
                 saveOrderToFirestore(order, checkoutId)
+                deleteCheckoutFromFirestore(checkoutId)
             }else{
 
             }
