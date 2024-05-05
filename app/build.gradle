@@ -104,6 +104,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:21.1.0'
     implementation 'com.google.code.gson:gson:2.8.7'
     implementation "org.mindrot:jbcrypt:0.4"
+    implementation "com.google.firebase:firebase-messaging:15.0.2"
 
 
 
