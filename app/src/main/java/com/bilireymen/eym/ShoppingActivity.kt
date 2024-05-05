@@ -6,9 +6,9 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.bilireymen.eym.databinding.ActivityShoppingBinding
+import com.bilireymen.eym.fragments.CategoryFragment
 import com.bilireymen.eym.fragments.HomeFragment
 import com.bilireymen.eym.fragments.ProfileFragment
-import com.bilireymen.eym.fragments.SearchFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class ShoppingActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
@@ -54,9 +54,9 @@ class ShoppingActivity : AppCompatActivity(), BottomNavigationView.OnNavigationI
                 replaceFragment(homeFragment)
                 return true
             }
-            R.id.searchFragment -> {
-                val searchFragment = SearchFragment()
-                replaceFragment(searchFragment)
+            R.id.categoryFragment -> {
+                val categoryFragment = CategoryFragment()
+                replaceFragment(categoryFragment)
                 return true
             }
         }

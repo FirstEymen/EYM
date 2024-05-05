@@ -75,7 +75,4 @@ class GridRvAdapter(private val context: Context,
         onItemClickListener = listener
     }
 
-
-
-
 }

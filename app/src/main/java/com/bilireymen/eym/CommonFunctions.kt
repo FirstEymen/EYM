@@ -20,10 +20,11 @@ class CommonFunctions {
             var favoriteProductList= getFavoriteProductList()
             if (!favoriteProductList.contains(productId))
             favoriteProductList.add(productId)
-            else
+            else {
                 favoriteProductList.remove(productId)
-            mPrefs.edit().remove("favoriteProducts").commit()
-            mPrefs.edit().putStringSet("favoriteProducts",favoriteProductList).commit()
+                mPrefs.edit().remove("favoriteProducts").commit()
+                mPrefs.edit().putStringSet("favoriteProducts", favoriteProductList).commit()
+            }
         }
     }
 }
