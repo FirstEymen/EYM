@@ -29,6 +29,7 @@ class CategoryProductsActivity : AppCompatActivity() {
             getData(it)
         }
         gridRvAdapter()
+
     }
 
     private fun gridRvAdapter() {
