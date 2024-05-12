@@ -67,22 +67,17 @@ class CartItemAdapter(private val context: Context,
                 builder.setTitle("Unsuccessful")
                 builder.setMessage("The product could not be updated.")
                 builder.setPositiveButton("Ok") { dialog, which ->
-
                 }
                 builder.show()
             }
     }
-
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CartItemViewHolder {
         val view =
             LayoutInflater.from(parent.context).inflate(R.layout.cart_item, parent, false)
         return CartItemViewHolder(view)
     }
-
     override fun onBindViewHolder(holder: CartItemViewHolder, position: Int) {
         val cartProduct = cartProducts[position]
-
         Glide.with(holder.itemView.context).load(cartProduct.product.images!!.get(0))
             .into(holder.productImageImageView)
         holder.productNameTextView.text = cartProduct.product.name
@@ -97,26 +92,36 @@ class CartItemAdapter(private val context: Context,
                 updateCartItem(cartProduct)
             }
         }
-
         holder.increaseButton.setOnClickListener {
             cartProduct.quantity = cartProduct.quantity!! + 1
             holder.productQuantityTextView.text = cartProduct.quantity.toString()
             updateCartItem(cartProduct)
-
         }
-
         holder.removeButton.setOnClickListener {
-            // Ürünü sepetten kaldırma işlemi
             val position = holder.adapterPosition
             if (position != RecyclerView.NO_POSITION) {
                 val cartProduct = cartProducts[position]
 
+                val customView = LayoutInflater.from(context).inflate(R.layout.custom_alert_dialog2, null)
+                val warningName = customView.findViewById<TextView>(R.id.warningName)
+                val warningDescription = customView.findViewById<TextView>(R.id.warningDescription)
+                val warningBtn = customView.findViewById<TextView>(R.id.warningBtn)
+                val warningBtn2 = customView.findViewById<TextView>(R.id.warningBtn2)
 
-                val builder = AlertDialog.Builder(context)
-                builder.setTitle("Delete Product!")
-                builder.setMessage("Are you sure you want to remove the product from the cart?")
-                builder.setPositiveButton("Yes") { _, _ ->
-                    // Firebase'den ürünü kaldır
+                warningName.text = "Warning!"
+                warningDescription.text = "Are you sure you want to remove the product from the cart?"
+
+                val alertDialog = AlertDialog.Builder(context)
+                    .setView(customView)
+                    .create()
+
+                warningBtn.text = "No"
+                warningBtn.setOnClickListener {
+                    alertDialog.dismiss()
+                }
+
+                warningBtn2.text = "Yes"
+                warningBtn2.setOnClickListener {
                     val cartItemRef = firebaseFirestore.collection("Cart")
                         .document(androidId)
                         .collection("Cart Products")
@@ -124,36 +129,45 @@ class CartItemAdapter(private val context: Context,
 
                     cartItemRef.delete()
                         .addOnSuccessListener {
-                            // Firebase'den başarıyla kaldırıldığında yerel listeyi güncelle
                             firebaseDeleteListener?.onDeleteSuccess(position)
-                            // Sepeti güncellemek için updateCartItem işlevini çağırın
-                            val builder = AlertDialog.Builder(context)
-                            builder.setTitle("Successful")
-                            builder.setMessage("The product has been removed from the cart.")
-                            builder.setPositiveButton("Ok") { dialog, which ->
-                                // Kullanıcı Tamam'a tıkladığında yapılacak işlemler
+                            val customView = LayoutInflater.from(context).inflate(R.layout.custom_alert_dialog, null)
+                            val warningName = customView.findViewById<TextView>(R.id.warningName)
+                            val warningDescription = customView.findViewById<TextView>(R.id.warningDescription)
+                            val warningBtn = customView.findViewById<TextView>(R.id.warningBtn)
+
+                            warningName.text = "Successful"
+                            warningDescription.text = "The product has been removed from the cart."
+                            warningBtn.text = "OK"
+
+                            val alertDialog = AlertDialog.Builder(context)
+                                .setView(customView)
+                                .create()
+
+                            warningBtn.setOnClickListener {
+                                alertDialog.dismiss()
                                 cartProducts.removeAt(position)
                                 notifyDataSetChanged()
                                 cartUpdateListener?.onCartUpdated()
                             }
-                            builder.show()
+
+                            alertDialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
+                            alertDialog.show()
                         }
                         .addOnFailureListener {
-                            val builder = AlertDialog.Builder(context)
-
-                            builder.setTitle("Unsuccessful")
-                            builder.setMessage("The product could not be removed.")
-                            builder.setPositiveButton("Ok") { dialog, which ->
-                                // Kullanıcı Tamam'a tıkladığında yapılacak işlemler
-                                firebaseDeleteListener?.onDeleteFailure()
-                            }
-                            builder.show()
+                            val failureDialog = AlertDialog.Builder(context)
+                                .setTitle("Unsuccessful")
+                                .setMessage("The product could not be removed.")
+                                .setPositiveButton("Ok") { _, _ ->
+                                    firebaseDeleteListener?.onDeleteFailure()
+                                }
+                                .create()
+                            failureDialog.show()
                         }
+                    alertDialog.dismiss()
                 }
-                builder.setNegativeButton("No") { dialog, _ ->
-                    dialog.dismiss()
-                }
-                builder.show()
+
+                alertDialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
+                alertDialog.show()
             }
         }
 

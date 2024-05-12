@@ -18,7 +18,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
         android:background="@drawable/white_background"
-        android:src="@drawable/warning" />
+        android:src="@drawable/warnings" />
 
     <TextView
         android:id="@+id/warningName"
@@ -35,6 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:gravity="center"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="5dp"
         android:text="Email field cannot beempty"
@@ -43,36 +44,42 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    <TextView
-        android:id="@+id/warningBtn"
-        style="@style/buttonAddtoCart"
-        android:layout_width="150dp"
-        android:layout_height="50dp"
-        android:background="@color/greena"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="15dp"
-        android:text="CANCEL"
-        android:textSize="18sp">
-    </TextView>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
 
-    <TextView
-        android:id="@+id/warningBtn2"
-        style="@style/buttonAddtoCart"
-        android:layout_width="150dp"
-        android:layout_height="50dp"
-        android:background="@color/greena"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="190dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="15dp"
-        android:text="OK"
-        android:textSize="18sp">
-    </TextView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/warningBtn"
+                style="@style/buttonAddtoCart"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="5dp"
+                android:background="@color/greena"
+                android:text="CANCEL"
+                android:textSize="18sp">
+            </TextView>
+
+            <TextView
+                android:id="@+id/warningBtn2"
+                style="@style/buttonAddtoCart"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="15dp"
+                android:background="@color/greena"
+                android:text="OK"
+                android:textSize="18sp">
+            </TextView>
+        </LinearLayout>
     </FrameLayout>
 
 </LinearLayout>

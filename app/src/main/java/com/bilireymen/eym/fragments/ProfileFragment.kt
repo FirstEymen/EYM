@@ -12,6 +12,7 @@ import com.bilireymen.eym.AddressListActivity
 import com.bilireymen.eym.EYMAplication
 import com.bilireymen.eym.IntroductionActivity
 import com.bilireymen.eym.OrderActivity
+import com.bilireymen.eym.ProfileActivity
 import com.bilireymen.eym.R
 import com.bilireymen.eym.ShoppingActivity
 import com.bilireymen.eym.Utils
@@ -44,6 +45,10 @@ class ProfileFragment : Fragment() {
         if (EYMAplication.getInstance().user!=null) {
             tvUserName.text = user!!.firstName
             tvUserEmail.text = user.email
+        }else{
+            startActivity(Intent(requireContext(), IntroductionActivity::class.java))
+            activity?.finish()
+            return
         }
 
         Utils.getUserSelectedAddressPositionFromDatabaseOrSharedPreferences(requireContext(), user?.id ?: "") { position ->
@@ -64,6 +69,12 @@ class ProfileFragment : Fragment() {
             startActivity(intent)
         }
 
+        val myProfileProfile=view.findViewById<TextView>(R.id.myProfileProfile)
+        myProfileProfile.setOnClickListener{
+            val intent=Intent(requireContext(), ProfileActivity::class.java)
+            startActivity(intent)
+        }
+
 
         signOutButton.setOnClickListener {
             Utils.clearUserDataFromSharedPreferences(requireContext())
@@ -74,4 +85,5 @@ class ProfileFragment : Fragment() {
             startActivity(intent)
         }
     }
+
 }

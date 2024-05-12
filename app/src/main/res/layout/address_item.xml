@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
+<androidx.cardview.widget.CardView xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cartAddress"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -42,6 +42,16 @@
             app:layout_constraintTop_toTopOf="parent">
         </TextView>
 
+        <ImageView
+            android:id="@+id/addressEdit"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="2dp"
+            android:src="@drawable/address_edit"
+            app:layout_constraintTop_toTopOf="@+id/addressName"
+            app:layout_constraintEnd_toStartOf="@+id/addressName">
+        </ImageView>
+
         <TextView
             android:id="@+id/addressAddress"
             android:layout_width="280dp"
@@ -59,10 +69,11 @@
             android:id="@+id/addressSelect"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:layout_marginStart="50dp"
+            android:layout_marginStart="5dp"
             android:src="@drawable/address_not_select"
             app:layout_constraintStart_toEndOf="@+id/addressAddress"
-            app:layout_constraintTop_toTopOf="@+id/addressAddress">
+            app:layout_constraintTop_toTopOf="@+id/addressAddress"
+            app:layout_constraintBottom_toBottomOf="@+id/addressAddress">
         </ImageView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
