@@ -77,7 +77,7 @@
             android:layout_height="25dp"
             android:text="-"
             android:textSize="15sp"
-            android:layout_marginStart="140dp"
+            android:layout_marginStart="100dp"
             android:background="@drawable/btn_cart"
             android:gravity="center"
             app:layout_constraintStart_toEndOf="@+id/cartProductQuantity"

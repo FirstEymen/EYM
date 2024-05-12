@@ -105,4 +105,20 @@ class FirestoreHelper {
             }
     }
 
+    fun updateUser(
+        userId: String,
+        updatedFields: Map<String, Any>,
+        onSuccess: () -> Unit,
+        onFailure: (Exception) -> Unit
+    ) {
+        usersCollection.document(userId)
+            .update(updatedFields)
+            .addOnSuccessListener {
+                onSuccess()
+            }
+            .addOnFailureListener { e ->
+                onFailure(e)
+            }
+    }
+
 }

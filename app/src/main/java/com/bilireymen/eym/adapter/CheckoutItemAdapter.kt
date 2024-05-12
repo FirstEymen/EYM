@@ -13,8 +13,7 @@ import com.bumptech.glide.Glide
 class CheckoutItemAdapter(
     private val cartProducts: ArrayList<CartProduct>,
     private val subtotalPriceTextView: TextView
-) :
-    RecyclerView.Adapter<CheckoutItemAdapter.CheckoutViewHolder>() {
+) : RecyclerView.Adapter<CheckoutItemAdapter.CheckoutViewHolder>() {
 
     override fun onBindViewHolder(holder: CheckoutViewHolder, position: Int) {
         val cartProduct = cartProducts[position]

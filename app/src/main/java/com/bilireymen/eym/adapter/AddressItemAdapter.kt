@@ -11,9 +11,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bilireymen.eym.R
 import com.bilireymen.eym.Utils
 import com.bilireymen.eym.models.Address
-
+interface OnAddressItemClickListener {
+    fun onEditAddressClicked(position: Int)
+}
 class AddressItemAdapter(private val context: Context, private val addressList: List<Address>) :
     RecyclerView.Adapter<AddressItemAdapter.AddressViewHolder>() {
+
+    var onAddressItemClickListener: OnAddressItemClickListener? = null
 
     fun getSelectedAddress(): Address? {
         if (selectedAddressPosition != -1 && selectedAddressPosition < addressList.size) {
@@ -45,6 +49,7 @@ class AddressItemAdapter(private val context: Context, private val addressList: 
         val addressAddress: TextView = itemView.findViewById(R.id.addressAddress)
         val addressSelect: ImageView = itemView.findViewById(R.id.addressSelect)
         val cardView: CardView = itemView.findViewById(R.id.cartAddress)
+        val addressEdit: ImageView = itemView.findViewById(R.id.addressEdit)
 
         init {
             addressSelect.setOnClickListener {
@@ -59,11 +64,14 @@ class AddressItemAdapter(private val context: Context, private val addressList: 
                 }
             }
         }
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AddressViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.address_item, parent, false)
         return AddressViewHolder(view)
+
+
     }
 
     override fun onBindViewHolder(holder: AddressViewHolder, position: Int) {
@@ -79,6 +87,11 @@ class AddressItemAdapter(private val context: Context, private val addressList: 
             holder.addressSelect.setImageResource(R.drawable.address_not_select)
             addressItem.isSelected = false
         }
+
+        holder.addressEdit.setOnClickListener {
+            onAddressItemClickListener?.onEditAddressClicked(position)
+        }
+
     }
 
     override fun getItemCount(): Int {
