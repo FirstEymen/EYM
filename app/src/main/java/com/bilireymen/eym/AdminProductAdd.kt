@@ -32,39 +32,28 @@ import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
 import java.util.UUID
-
 @Suppress("DEPRECATION")
 class AdminProductAdd : AppCompatActivity() {
     companion object {
         const val CATEGORY_SELECTION_REQUEST_CODE = 1001
         const val  PRODUCT_LIST_REQUEST_CODE = 1002
     }
-
-
-
     private val binding by lazy { ActivityAdminProductAddBinding.inflate(layoutInflater) }
     private var selectedImages = mutableListOf<Uri>()
     private val productsStorage = Firebase.storage.reference
     private val firestore = Firebase.firestore
     private var product: Product? = null
-
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-
         product = intent.getSerializableExtra("product") as Product?
-
         if (product != null) {
             initEditProduct()
         } else product = Product()
-
         val selectedImagesActivityResult =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == RESULT_OK) {
                     val intent = result.data
-
                     if (intent?.clipData != null) {
                         val count = intent.clipData?.itemCount ?: 0
                         (0 until count).forEach {
@@ -80,34 +69,26 @@ class AdminProductAdd : AppCompatActivity() {
                     updateImages()
                 }
             }
-
         binding.buttonImagesPicker.setOnClickListener {
             val intent = Intent(ACTION_GET_CONTENT)
             intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
             intent.type = "image/*"
             selectedImagesActivityResult.launch(intent)
         }
-
         binding.selectCategoryButton.setOnClickListener {
             val intent = Intent(this, AdminCategoryListActivity::class.java)
             intent.putExtra("from", "product")
             startActivityForResult(intent, CATEGORY_SELECTION_REQUEST_CODE)
         }
-
         binding.deleteProduct.setOnClickListener {
             val productId = product?.id
-
             if (productId != null) {
                 showDeleteConfirmationDialog(productId)
             } else {
                 Toast.makeText(this, "Product ID is missing.", Toast.LENGTH_SHORT).show()
             }
         }
-
-
-
     }
-
     private fun showDeleteConfirmationDialog(productId: String) {
         val builder = AlertDialog.Builder(ContextThemeWrapper(this, R.style.AlertDialogCustom))
         builder.setTitle("Delete Product")
@@ -120,7 +101,6 @@ class AdminProductAdd : AppCompatActivity() {
         }
         builder.show()
     }
-
     private fun deleteProduct(productId: String) {
         firestore.collection("Products").document(productId)
             .delete()
@@ -136,7 +116,6 @@ class AdminProductAdd : AppCompatActivity() {
                     ).show()
                 }
                 builder.show()
-
                 val productListIntent = Intent(this, AdminMproductListActivity::class.java)
                 startActivityForResult(productListIntent, PRODUCT_LIST_REQUEST_CODE)
             }
@@ -154,7 +133,6 @@ class AdminProductAdd : AppCompatActivity() {
                 builder.show()
             }
     }
-
     @SuppressLint("SuspiciousIndentation")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -166,11 +144,9 @@ class AdminProductAdd : AppCompatActivity() {
             }
         }
     }
-
     private fun updateSelectedCategoryView(categoryName: String?) {
         binding.selectedCategoryTextView.text = categoryName
     }
-
     private fun initEditProduct() {
         binding.edName.setText(product!!.name)
         binding.edPrice.setText(product!!.price.toString())
@@ -178,16 +154,13 @@ class AdminProductAdd : AppCompatActivity() {
         binding.edDescription.setText(product!!.description)
         binding.edSizes.setText(product!!.sizes.toString())
     }
-
     private fun updateImages() {
         binding.tvSelectedImages.text = selectedImages.size.toString()
     }
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.toolbar_menu, menu)
         return true
     }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.saveProduct) {
             val productValidation = validateInformation()
@@ -210,11 +183,9 @@ class AdminProductAdd : AppCompatActivity() {
                 return false
             }
             saveProduct()
-
         }
         return super.onOptionsItemSelected(item)
     }
-
     private fun saveProduct() {
         product!!.name = binding.edName.text.toString().trim()
         product!!.price = binding.edPrice.text.toString().trim().toDouble()
@@ -226,7 +197,6 @@ class AdminProductAdd : AppCompatActivity() {
             withContext(Dispatchers.Main) {
                 showLoading()
             }
-
             try {
                 async {
                     imagesByteArrays.forEach {
@@ -241,7 +211,6 @@ class AdminProductAdd : AppCompatActivity() {
                         }
                     }
                 }.await()
-
             } catch (e: java.lang.Exception) {
                 e.printStackTrace()
                 withContext(Dispatchers.Main) {
@@ -262,7 +231,6 @@ class AdminProductAdd : AppCompatActivity() {
                 }
         }
     }
-
     private fun hideLoading() {
         binding.progressbar.visibility = View.INVISIBLE
         val builder =
@@ -276,13 +244,10 @@ class AdminProductAdd : AppCompatActivity() {
             ).show()
         }
         builder.show()
-
     }
-
     private fun showLoading() {
         binding.progressbar.visibility = View.VISIBLE
     }
-
     private fun getImagesByteArrays(): List<ByteArray> {
         val imagesByteArray = mutableListOf<ByteArray>()
         selectedImages.forEach {
@@ -294,26 +259,19 @@ class AdminProductAdd : AppCompatActivity() {
         }
         return imagesByteArray
     }
-
     private fun getSizeList(sizesStr: String): List<String>? {
         if (sizesStr.isEmpty())
             return null
         val sizesList = sizesStr.split(",")
         return sizesList
     }
-
     private fun validateInformation(): Boolean {
         if (binding.edPrice.text.toString().trim().isEmpty())
             return false
-
         if (binding.edName.text.toString().trim().isEmpty())
             return false
-
         if (selectedImages.isEmpty() && product!!.images!!.isEmpty())
             return false
-
         return true
     }
-
-
 }

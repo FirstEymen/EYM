@@ -10,33 +10,27 @@ import com.bilireymen.eym.databinding.ActivityCategoryproductsBinding
 import com.bilireymen.eym.models.Category
 import com.bilireymen.eym.models.Product
 import com.google.firebase.firestore.FirebaseFirestore
-
 class CategoryProductsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCategoryproductsBinding
     private lateinit var firestore: FirebaseFirestore
     private lateinit var adapterGrid: GridRvAdapter
     private var productArrayList: ArrayList<Product> = ArrayList()
     private  var category: Category?=null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCategoryproductsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         firestore = FirebaseFirestore.getInstance()
         category = intent.getSerializableExtra("category") as? Category
         category?.let {
             getData(it)
         }
         gridRvAdapter()
-
     }
-
     private fun gridRvAdapter() {
         adapterGrid = GridRvAdapter(this, productArrayList)
         binding.gridRVCategoryProducts.layoutManager = GridLayoutManager(this, 2)
         binding.gridRVCategoryProducts.adapter = adapterGrid
-
         adapterGrid.setOnItemClickListener(object : GridRvAdapter.OnItemClickListener {
             override fun onItemClick(position: Int, product: Product) {
                 // Ürün detayları sayfasına git
@@ -47,7 +41,6 @@ class CategoryProductsActivity : AppCompatActivity() {
             }
         })
     }
-
     private fun getData(category: Category) {
         // Kategorinin altındaki ürünleri Firestore'dan al
         firestore.collection("Products")

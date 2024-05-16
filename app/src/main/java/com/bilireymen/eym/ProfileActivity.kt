@@ -12,14 +12,12 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContentProviderCompat.requireContext
+import com.bilireymen.eym.fragments.ProfileFragment
 import com.bilireymen.eym.models.User
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
-
-
-class ProfileActivity:AppCompatActivity() {
-
+class ProfileActivity:AppCompatActivity(){
     private lateinit var profileNameLayout: TextInputLayout
     private lateinit var profileLastNameLayout: TextInputLayout
     private lateinit var profileEmailLayout: TextInputLayout
@@ -33,14 +31,11 @@ class ProfileActivity:AppCompatActivity() {
     private val firestoreHelper = FirestoreHelper()
     private lateinit var firestore: FirebaseFirestore
     private lateinit var usersCollection: CollectionReference
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
-
         firestore=FirebaseFirestore.getInstance()
         usersCollection = firestore.collection("Users")
-
         editProfileName = findViewById(R.id.editProfileName)
         editProfileLastName = findViewById(R.id.editProfileLastName)
         editProfileEmail = findViewById(R.id.editProfileEmail)
@@ -50,27 +45,21 @@ class ProfileActivity:AppCompatActivity() {
         profileEmailLayout = findViewById(R.id.profileEmailLayout)
         profilePhoneLayout = findViewById(R.id.profileLastNameLayout)
         profileSave = findViewById(R.id.profileSave)
-
         val currentUser = EYMAplication.getInstance().user
-
         if (currentUser != null) {
             displayUserInfo(currentUser)
-
             profileSave.setOnClickListener {
                 val newName = editProfileName.text.toString()
                 val newLastName = editProfileLastName.text.toString()
                 val newPhone = editProfilePhone.text.toString()
-
                 // Güncellenecek alanları bir harita olarak oluştur
                 val updatedFields = mutableMapOf<String, Any>()
                 if (newName.isNotEmpty()) updatedFields["firstName"] = newName
                 if (newLastName.isNotEmpty()) updatedFields["lastName"] = newLastName
                 if (newPhone.isNotEmpty()) updatedFields["phone"] = newPhone
-
                 // Firestore'da kullanıcıyı güncelle
                 firestoreHelper.updateUser(currentUser.id!!, updatedFields,
                     onSuccess = {
-
                         // Güncelleme başarılıysa, yerel kullanıcı nesnesini de güncelle
                         EYMAplication.getInstance().user?.let { user ->
                             updatedFields.forEach { (key, value) ->
@@ -85,11 +74,9 @@ class ProfileActivity:AppCompatActivity() {
                         val alertDialog = AlertDialog.Builder(this@ProfileActivity)
                             .setView(customView)
                             .create()
-
                         val warningName = customView.findViewById<TextView>(R.id.warningName)
                         val warningDescription = customView.findViewById<TextView>(R.id.warningDescription)
                         val warningBtn = customView.findViewById<TextView>(R.id.warningBtn)
-
                         warningName.text = "Notification"
                         warningDescription.text = "Profile updated successfully."
                         warningBtn.text = "OK"
@@ -97,7 +84,6 @@ class ProfileActivity:AppCompatActivity() {
                             customView.startAnimation(AnimationUtils.loadAnimation(this@ProfileActivity, R.anim.bounce))
                             alertDialog.dismiss()
                         }
-
                         alertDialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
                         alertDialog.show()
                     },
@@ -110,7 +96,6 @@ class ProfileActivity:AppCompatActivity() {
             // Kullanıcı verileri alınamadıysa burası çalışır
             Toast.makeText(this, "Kullanıcı verileri alınamadı", Toast.LENGTH_SHORT).show()
         }
-
         val deleteUserProfile = findViewById<TextView>(R.id.deleteUserProfile)
         deleteUserProfile.setOnClickListener {
             val customView = LayoutInflater.from(this@ProfileActivity).inflate(R.layout.custom_alert_dialog2, null)
@@ -118,10 +103,8 @@ class ProfileActivity:AppCompatActivity() {
             val warningDescription = customView.findViewById<TextView>(R.id.warningDescription)
             val warningBtn = customView.findViewById<TextView>(R.id.warningBtn)
             val warningBtn2 = customView.findViewById<TextView>(R.id.warningBtn2)
-
             warningName.text = "Warning!"
             warningDescription.text = "Are you sure you want to delete your account? This action cannot be undone."
-
             val alertDialog = AlertDialog.Builder(this@ProfileActivity)
                 .setView(customView)
                 .create()
@@ -140,16 +123,13 @@ class ProfileActivity:AppCompatActivity() {
             alertDialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
             alertDialog.show()
         }
-
     }
-
     private fun displayUserInfo(user: User) {
         editProfileName.setText(user.firstName)
         editProfileLastName.setText(user.lastName)
         editProfileEmail.setText(user.email)
         editProfilePhone.setText(user.phone)
     }
-
     private fun deleteUserAccount(user: User) {
         val userId = user.id
         if (userId != null) {
@@ -172,14 +152,10 @@ class ProfileActivity:AppCompatActivity() {
     private fun clearUserData() {
         // Kullanıcı bilgilerini SharedPreferences'ten temizle
         Utils.clearUserDataFromSharedPreferences(this)
-
         // Kullanıcı nesnesini null yaparak EYMAplication'daki kullanıcıyı temizle
         EYMAplication.getInstance().user = null
-
-        // Oturumu kapat ve IntroductionActivity'e yönlendir
         signOut()
     }
-
     private fun signOut() {
         // Oturumu kapat ve IntroductionActivity'e yönlendir
         val intent = Intent(this, IntroductionActivity::class.java)
@@ -187,6 +163,4 @@ class ProfileActivity:AppCompatActivity() {
         startActivity(intent)
         finish()
     }
-
-
 }

@@ -9,7 +9,7 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/homeHeader"
+        android:id="@+id/homeHeaderSearch"
         android:layout_width="match_parent"
         android:layout_marginStart="24dp"
         android:layout_marginTop="15dp"
@@ -17,32 +17,43 @@
         android:orientation="horizontal"
         android:layout_height="wrap_content">
 
-        
+
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/searchBar"
+            android:id="@+id/searchBarSearch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@drawable/search_box_background">
-            
-            <TextView
-                android:id="@+id/searchText"
-                android:layout_width="0dp"
+
+            <EditText
+                android:id="@+id/searchTextSearch"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_thin"
                 android:paddingStart="20dp"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
                 android:singleLine="true"
-                android:text="Search Now"
+                android:hint="Search Now"
+                android:background="@null"
                 android:textColor="#919394"
                 android:textSize="15sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"/>
 
+            <View
+                android:id="@+id/underlineView"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/white"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
             <ImageView
-                android:id="@+id/searchImage"
+                android:id="@+id/searchImageSearch"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_marginEnd="20dp"
@@ -68,9 +79,8 @@
         <View
             android:layout_width="10dp"
             android:layout_height="match_parent"/>
-        
+
         <ImageView
-            android:id="@+id/microphoneHome"
             android:layout_width="40dp"
             android:layout_height="match_parent"
             android:src="@drawable/ic_microphone"
@@ -79,7 +89,7 @@
     </LinearLayout>
 
     <ScrollView
-        android:id="@+id/scrollView"
+        android:id="@+id/scrollViewSearch"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
@@ -89,44 +99,13 @@
             android:orientation="vertical"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:text="Best Product"
-                android:textSize="22sp"
-                android:fontFamily="@font/poppins_thin"
-                android:layout_width="wrap_content"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/gridRvSearch"
                 android:layout_marginTop="10dp"
-                android:layout_marginStart="20dp"
-                android:layout_height="wrap_content">
-            </TextView>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/horizontalRv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
             </androidx.recyclerview.widget.RecyclerView>
 
-
-            <com.jackandphantom.carouselrecyclerview.CarouselRecyclerview
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/carouselRv"/>
-
-            <TextView
-                android:text="Special Product"
-                android:textSize="25sp"
-                android:layout_gravity="center"
-                android:fontFamily="@font/poppins_light"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-            </TextView>
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/gridRV"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            </androidx.recyclerview.widget.RecyclerView>
         </LinearLayout>
-
     </ScrollView>
-
 </LinearLayout>
-

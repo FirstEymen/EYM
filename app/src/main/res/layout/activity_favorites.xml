@@ -2,7 +2,7 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:background="@color/gray_a"
+    android:background="@color/white"
     android:layout_height="match_parent">
 
     <LinearLayout
@@ -13,7 +13,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="MY ORDERS"
+            android:text="MY FAVORITES"
             android:textSize="24sp"
             android:textStyle="bold"
             android:fontFamily="@font/poppins_light"
@@ -21,13 +21,13 @@
             android:layout_marginTop="10dp" />
 
         <View
-            android:id="@+id/lineLocatıonOrder"
+            android:id="@+id/lineLocatıonFavorites"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/g_line"/>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/orderListRv"
+            android:id="@+id/favoritesProfile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         </androidx.recyclerview.widget.RecyclerView>

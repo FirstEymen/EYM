@@ -8,33 +8,24 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.bilireymen.eym.databinding.ActivityAdminRegisterBinding
 import com.google.firebase.auth.FirebaseAuth
-
 class AdminRegisterActivity:AppCompatActivity(){
-
         private lateinit var binding:ActivityAdminRegisterBinding
         private lateinit var firebaseAuth:FirebaseAuth
-
         override fun onCreate(savedInstanceState: Bundle?){
             super.onCreate(savedInstanceState)
-
             binding= ActivityAdminRegisterBinding.inflate(layoutInflater)
             setContentView(binding.root)
-
             firebaseAuth=FirebaseAuth.getInstance()
-
             binding.textView.setOnClickListener{
                 val intent=Intent(this,AdminLoginActivity::class.java)
                 startActivity(intent)
             }
-
             binding.adminSignUpButton.setOnClickListener{
                 val email=binding.adminEmail.text.toString()
                 val pass=binding.adminPassword.text.toString()
                 val confirmPass=binding.adminConfirmPassword.text.toString()
-
                 if (email.isNotEmpty() && pass.isNotEmpty() && confirmPass.isNotEmpty()){
                     if (pass == confirmPass){
-
                         firebaseAuth.createUserWithEmailAndPassword(email,pass).addOnCompleteListener{
                             if (it.isSuccessful){
                                 val intent=Intent(this,AdminLoginActivity::class.java)

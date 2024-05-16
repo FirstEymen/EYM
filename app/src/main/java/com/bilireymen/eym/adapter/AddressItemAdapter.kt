@@ -27,7 +27,6 @@ class AddressItemAdapter(private val context: Context, private val addressList: 
     }
     var selectedAddressPosition = -1
         private set
-
     // Seçilen adresi güncellemek için bu metod
     fun setSelectedAddressPosition(position: Int) {
         selectedAddressPosition = position
@@ -43,19 +42,16 @@ class AddressItemAdapter(private val context: Context, private val addressList: 
             )
         }
     }
-
     inner class AddressViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val addressName: TextView = itemView.findViewById(R.id.addressName)
         val addressAddress: TextView = itemView.findViewById(R.id.addressAddress)
         val addressSelect: ImageView = itemView.findViewById(R.id.addressSelect)
         val cardView: CardView = itemView.findViewById(R.id.cartAddress)
         val addressEdit: ImageView = itemView.findViewById(R.id.addressEdit)
-
         init {
             addressSelect.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
-
                     selectedAddressPosition = position
                     val selectedAddress = addressList[position]
                     selectedAddress.isSelected = true
@@ -64,22 +60,15 @@ class AddressItemAdapter(private val context: Context, private val addressList: 
                 }
             }
         }
-
     }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AddressViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.address_item, parent, false)
         return AddressViewHolder(view)
-
-
     }
-
     override fun onBindViewHolder(holder: AddressViewHolder, position: Int) {
         val addressItem = addressList[position]
-
         holder.addressName.text = addressItem.name
         holder.addressAddress.text = addressItem.address
-
         if (position == selectedAddressPosition) {
             holder.addressSelect.setImageResource(R.drawable.address_select)
             addressItem.isSelected = true
@@ -87,13 +76,10 @@ class AddressItemAdapter(private val context: Context, private val addressList: 
             holder.addressSelect.setImageResource(R.drawable.address_not_select)
             addressItem.isSelected = false
         }
-
         holder.addressEdit.setOnClickListener {
             onAddressItemClickListener?.onEditAddressClicked(position)
         }
-
     }
-
     override fun getItemCount(): Int {
         return addressList.size
     }

@@ -24,7 +24,6 @@ import com.bilireymen.eym.models.CartProduct
 import com.bilireymen.eym.models.Product
 import com.bilireymen.eym.models.User
 import com.google.firebase.firestore.FirebaseFirestore
-
 class ProductDetailsActivity:AppCompatActivity() {
     private lateinit var binding: ActivityProductDetailsBinding
     private val viewPagerAdapter by lazy { ViewPager2Images() }
@@ -39,23 +38,16 @@ class ProductDetailsActivity:AppCompatActivity() {
     private  var product: Product?=null
     private lateinit var firebaseFirestore: FirebaseFirestore
     private var user: User? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         firebaseFirestore= FirebaseFirestore.getInstance()
         binding = ActivityProductDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         EYMAplication.getUserId()
-
         user = Utils.getUserFromSharedPreferences(this)
-
         product = intent.getSerializableExtra("product") as? Product
-
         setupViewpager()
         setupSizesRv()
-
         binding.apply {
             productDetailsName.text = product?.name
             val oldPrice = "${"$" + product?.offerPercentage}"
@@ -79,10 +71,8 @@ class ProductDetailsActivity:AppCompatActivity() {
         }
         viewPagerAdapter.differ.submitList(product?.images)
         product?.sizes?.let { sizesAdapter.differ.submitList(it) }
-
         viewPager = findViewById(R.id.viewPagerProductImages)
         indicatorLayout = findViewById(R.id.indicatorLayout)
-
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
@@ -90,30 +80,23 @@ class ProductDetailsActivity:AppCompatActivity() {
             }
         })
         setupIndicator()
-
         tvQuantity = findViewById(R.id.tvQuantity)
         btnDecrease = findViewById(R.id.btnDecrease)
         btnIncrease = findViewById(R.id.btnIncrease)
-
         updateQuantityDisplay(currentQuantity)
-
         btnDecrease.setOnClickListener {
             if (currentQuantity > 1) {
                 currentQuantity--
                 updateQuantityDisplay(currentQuantity)
             }
         }
-
         btnIncrease.setOnClickListener {
             currentQuantity++
             updateQuantityDisplay(currentQuantity)
         }
-
         val buttonAddtoCart = findViewById<TextView>(R.id.buttonAddtoCart)
         buttonAddtoCart.setOnClickListener {
-
             val androidId = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
-
             if (user != null) { // Kullanıcı giriş yapmışsa Firestore kullan
                 val userId = EYMAplication.getUserId()
                 var selectedSize: String? = sizesAdapter.selectedSize
@@ -125,38 +108,30 @@ class ProductDetailsActivity:AppCompatActivity() {
                 )
                 val userCartCollection = firebaseFirestore.collection("Cart").document(userId!!)
                     .collection("Cart Products")
-
                 userCartCollection.document(product!!.id!!).set(cartProductMap)
                     .addOnSuccessListener {
-
                         val customView = LayoutInflater.from(this@ProductDetailsActivity).inflate(R.layout.custom_alert_dialog2, null)
                         val alertDialog = AlertDialog.Builder(this@ProductDetailsActivity)
                             .setView(customView)
                             .create()
-
                         val warningName = customView.findViewById<TextView>(R.id.warningName)
                         val warningDescription = customView.findViewById<TextView>(R.id.warningDescription)
                         val warningBtn = customView.findViewById<TextView>(R.id.warningBtn)
                         val warningBtn2 = customView.findViewById<TextView>(R.id.warningBtn2)
-
                         warningName.text = "Notification"
                         warningDescription.text = "The product has been added to the cart, would you like to go to the cart?"
-
                         warningBtn.text = "CANCEL"
                         warningBtn.setOnClickListener {
                             customView.startAnimation(AnimationUtils.loadAnimation(this@ProductDetailsActivity, R.anim.bounce))
                             alertDialog.dismiss()
                         }
-
                         warningBtn2.text = "OK"
                         warningBtn2.setOnClickListener {
                             customView.startAnimation(AnimationUtils.loadAnimation(this@ProductDetailsActivity, R.anim.bounce))
                             alertDialog.dismiss()
-
                             val intent = Intent(this@ProductDetailsActivity, CartActivity::class.java)
                             startActivity(intent)
                         }
-
                         alertDialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
                         alertDialog.show()
                     }
@@ -174,38 +149,30 @@ class ProductDetailsActivity:AppCompatActivity() {
                 )
                 val cartCollection = firebaseFirestore.collection("Cart").document(androidId)
                     .collection("Cart Products")
-
                 cartCollection.document(product!!.id!!).set(cartProductMap)
                     .addOnSuccessListener {
-
                         val customView = LayoutInflater.from(this@ProductDetailsActivity).inflate(R.layout.custom_alert_dialog2, null)
                         val alertDialog = AlertDialog.Builder(this@ProductDetailsActivity)
                             .setView(customView)
                             .create()
-
                         val warningName = customView.findViewById<TextView>(R.id.warningName)
                         val warningDescription = customView.findViewById<TextView>(R.id.warningDescription)
                         val warningBtn = customView.findViewById<TextView>(R.id.warningBtn)
                         val warningBtn2 = customView.findViewById<TextView>(R.id.warningBtn2)
-
                         warningName.text = "Notification"
                         warningDescription.text = "The product has been added to the cart, would you like to go to the cart?"
-
                         warningBtn.text = "CANCEL"
                         warningBtn.setOnClickListener {
                             customView.startAnimation(AnimationUtils.loadAnimation(this@ProductDetailsActivity, R.anim.bounce))
                             alertDialog.dismiss()
                         }
-
                         warningBtn2.text = "OK"
                         warningBtn2.setOnClickListener {
                             customView.startAnimation(AnimationUtils.loadAnimation(this@ProductDetailsActivity, R.anim.bounce))
                             alertDialog.dismiss()
-
                             val intent = Intent(this@ProductDetailsActivity, CartActivity::class.java)
                             startActivity(intent)
                         }
-
                         alertDialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
                         alertDialog.show()
                     }
@@ -214,13 +181,10 @@ class ProductDetailsActivity:AppCompatActivity() {
                     }
             }
         }
-
     }
-
     private fun updateQuantityDisplay(quantity: Int) {
         tvQuantity.text = quantity.toString()
     }
-
     private fun setupIndicator() {
         val pageCount = viewPagerAdapter.itemCount
         for (i in 0 until pageCount) {
@@ -237,18 +201,15 @@ class ProductDetailsActivity:AppCompatActivity() {
         }
         updateIndicator(0)
     }
-
     private fun updateIndicator(selectedIndex: Int) {
         for (i in indicatorDots.indices) {
             val drawableId = if (i == selectedIndex) R.drawable.ic_dot_active else R.drawable.ic_dot_inactive
             indicatorDots[i].setImageResource(drawableId)
         }
     }
-
     private fun setupViewpager() {
         binding.viewPagerProductImages.adapter = viewPagerAdapter
     }
-
     private fun setupSizesRv() {
         binding.rvSize.apply {
             adapter = sizesAdapter
@@ -259,8 +220,6 @@ class ProductDetailsActivity:AppCompatActivity() {
             )
         }
     }
-
-
     /*fun showCustomAlertDialog() {
         val customView = LayoutInflater.from(this).inflate(R.layout.custom_alert_dialog2, null)
         val alertDialog = AlertDialog.Builder(this).setView(customView).create()

@@ -9,7 +9,6 @@ data class User(
     val password: String? = null,
     val addresses: MutableList<Address>? = mutableListOf()
 ) {
-
 }
 
 

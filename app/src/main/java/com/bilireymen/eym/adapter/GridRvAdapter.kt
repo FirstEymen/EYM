@@ -13,17 +13,13 @@ import com.bilireymen.eym.CommonFunctions
 import com.bilireymen.eym.R
 import com.bilireymen.eym.models.Product
 import com.bumptech.glide.Glide
-
 class GridRvAdapter(private val context: Context,
                     private var productArrayList: ArrayList<Product>,
                     private var onItemClickListener: OnItemClickListener? = null): RecyclerView.Adapter<GridRvAdapter.GridHolder>(){
-
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GridHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.activity_gridrv_item, parent, false)
         return GridHolder(view)
     }
-
     override fun onBindViewHolder(holder: GridHolder, position: Int) {
         holder.productItem = productArrayList[position]
         holder.nameTextView.text = holder.productItem.name
@@ -36,13 +32,10 @@ class GridRvAdapter(private val context: Context,
            Glide.with(holder.favoriteIv.context).load(R.drawable.ic_favoritered).into(holder.favoriteIv)
         else
            Glide.with(holder.favoriteIv.context).load(R.drawable.ic_favorite).into(holder.favoriteIv)
-
     }
-
     override fun getItemCount(): Int {
         return productArrayList.size
     }
-
     inner class GridHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         lateinit var productItem:Product
         var nameTextView: TextView = itemView.findViewById(R.id.gridRvName)
@@ -64,15 +57,11 @@ class GridRvAdapter(private val context: Context,
                 }
             }
         }
-
     }
-
     interface OnItemClickListener {
         fun onItemClick(position: Int, product: Product)
-
     }
     fun setOnItemClickListener(listener: OnItemClickListener) {
         onItemClickListener = listener
     }
-
 }

@@ -10,9 +10,7 @@ import com.bilireymen.eym.fragments.CategoryFragment
 import com.bilireymen.eym.fragments.HomeFragment
 import com.bilireymen.eym.fragments.ProfileFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
-
 class ShoppingActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
-
     private val binding by lazy {
         ActivityShoppingBinding.inflate(layoutInflater)
     }
@@ -25,9 +23,7 @@ class ShoppingActivity : AppCompatActivity(), BottomNavigationView.OnNavigationI
         app.user = user
         binding.bottomNavigation.setOnItemSelectedListener(this)
         binding.bottomNavigation.setSelectedItemId(R.id.homeFragment)
-
     }
-
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.cartFragment -> {
@@ -36,7 +32,6 @@ class ShoppingActivity : AppCompatActivity(), BottomNavigationView.OnNavigationI
                 return false
             }
             R.id.profileFragment -> {
-
                 // Kullanıcı girişi kontrolü
                 if (EYMAplication.getInstance().user != null) {
                     val profileFragment = ProfileFragment()
@@ -68,5 +63,4 @@ class ShoppingActivity : AppCompatActivity(), BottomNavigationView.OnNavigationI
         transaction.addToBackStack(null)
         transaction.commit()
     }
-
 }

@@ -16,25 +16,19 @@ class CartItemAdapter(private val context: Context,
                       private val firebaseFirestore: FirebaseFirestore,
                       private val androidId: String,
                       private val fragment: Fragment) :
-    RecyclerView.Adapter<CartItemAdapter.CartItemViewHolder>() {
-
+    RecyclerView.Adapter<CartItemAdapter.CartItemViewHolder>(){
     interface OnCartUpdateListener {
         fun onCartUpdated()
     }
-
     private var cartUpdateListener: OnCartUpdateListener? = null
-
     fun setOnCartUpdateListener(listener: OnCartUpdateListener) {
         cartUpdateListener = listener
     }
-
     interface OnFirebaseDeleteListener {
         fun onDeleteSuccess(position: Int)
         fun onDeleteFailure()
     }
-
     private var firebaseDeleteListener: OnFirebaseDeleteListener? = null
-
     fun setOnFirebaseDeleteListener(listener: OnFirebaseDeleteListener) {
         firebaseDeleteListener = listener
     }
@@ -44,7 +38,6 @@ class CartItemAdapter(private val context: Context,
             .document(androidId)
             .collection("Cart Products")
             .document(cartProduct.product.id!!)
-
         val updateData = mapOf(
             "quantity" to cartProduct.quantity,
             "selectedSize" to cartProduct.selectedSize
@@ -84,7 +77,6 @@ class CartItemAdapter(private val context: Context,
         holder.productSizeTextView.text = cartProduct.selectedSize
         holder.productQuantityTextView.text = cartProduct.quantity.toString()
         holder.productPriceTextView.text = "$${cartProduct.product.price}"
-
         holder.decreaseButton.setOnClickListener {
             if (cartProduct.quantity!! > 1) {
                 cartProduct.quantity = cartProduct.quantity!! - 1
@@ -101,32 +93,26 @@ class CartItemAdapter(private val context: Context,
             val position = holder.adapterPosition
             if (position != RecyclerView.NO_POSITION) {
                 val cartProduct = cartProducts[position]
-
                 val customView = LayoutInflater.from(context).inflate(R.layout.custom_alert_dialog2, null)
                 val warningName = customView.findViewById<TextView>(R.id.warningName)
                 val warningDescription = customView.findViewById<TextView>(R.id.warningDescription)
                 val warningBtn = customView.findViewById<TextView>(R.id.warningBtn)
                 val warningBtn2 = customView.findViewById<TextView>(R.id.warningBtn2)
-
                 warningName.text = "Warning!"
                 warningDescription.text = "Are you sure you want to remove the product from the cart?"
-
                 val alertDialog = AlertDialog.Builder(context)
                     .setView(customView)
                     .create()
-
                 warningBtn.text = "No"
                 warningBtn.setOnClickListener {
                     alertDialog.dismiss()
                 }
-
                 warningBtn2.text = "Yes"
                 warningBtn2.setOnClickListener {
                     val cartItemRef = firebaseFirestore.collection("Cart")
                         .document(androidId)
                         .collection("Cart Products")
                         .document(cartProduct.product.id!!)
-
                     cartItemRef.delete()
                         .addOnSuccessListener {
                             firebaseDeleteListener?.onDeleteSuccess(position)
@@ -134,22 +120,18 @@ class CartItemAdapter(private val context: Context,
                             val warningName = customView.findViewById<TextView>(R.id.warningName)
                             val warningDescription = customView.findViewById<TextView>(R.id.warningDescription)
                             val warningBtn = customView.findViewById<TextView>(R.id.warningBtn)
-
                             warningName.text = "Successful"
                             warningDescription.text = "The product has been removed from the cart."
                             warningBtn.text = "OK"
-
                             val alertDialog = AlertDialog.Builder(context)
                                 .setView(customView)
                                 .create()
-
                             warningBtn.setOnClickListener {
                                 alertDialog.dismiss()
                                 cartProducts.removeAt(position)
                                 notifyDataSetChanged()
                                 cartUpdateListener?.onCartUpdated()
                             }
-
                             alertDialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
                             alertDialog.show()
                         }
@@ -165,18 +147,14 @@ class CartItemAdapter(private val context: Context,
                         }
                     alertDialog.dismiss()
                 }
-
                 alertDialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
                 alertDialog.show()
             }
         }
-
-
     }
     override fun getItemCount(): Int {
         return cartProducts.size
     }
-
     inner class CartItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val productImageImageView: ImageView= itemView.findViewById(R.id.cartProductImage)
         val productNameTextView: TextView = itemView.findViewById(R.id.cartProductName)

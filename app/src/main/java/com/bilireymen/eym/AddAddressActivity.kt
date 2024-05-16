@@ -12,7 +12,6 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.firestore.FirebaseFirestore
 class AddAddressActivity : AppCompatActivity() {
-
     private lateinit var addAddressName: TextInputEditText
     private lateinit var addAddressAddress: TextInputEditText
     private lateinit var buttonSaveAddress: Button
@@ -20,22 +19,18 @@ class AddAddressActivity : AppCompatActivity() {
     private lateinit var addressAddressLayout: TextInputLayout
     private val firestore = FirebaseFirestore.getInstance()
     private val usersCollection = firestore.collection("Users")
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_address_add)
-
         addAddressName = findViewById(R.id.addAddressName)
         addAddressAddress = findViewById(R.id.addAddressAddress)
         buttonSaveAddress = findViewById(R.id.buttonSaveAddress)
         addAddressNameLayout = findViewById(R.id.addAddressNameLayout)
         addressAddressLayout = findViewById(R.id.addressAddressLayout)
-
         buttonSaveAddress.setOnClickListener {
             val addressName = addAddressName.text.toString()
                 .trim() // Trim ile baştaki ve sondaki boşlukları kaldırır
             val addressText = addAddressAddress.text.toString().trim()
-
             // Adres adı veya adres boş bırakıldıysa
             if (addressName.isEmpty() || addressText.isEmpty()) {
                 // Hata mesajı göster
@@ -44,7 +39,6 @@ class AddAddressActivity : AppCompatActivity() {
                 } else {
                     addAddressNameLayout.error = null
                 }
-
                 if (addressText.isEmpty()) {
                     addressAddressLayout.error = "Address cannot be empty"
                 } else {
@@ -54,12 +48,10 @@ class AddAddressActivity : AppCompatActivity() {
                 // Adres adı ve adres dolu ise normal işlemlere devam et
                 addAddressNameLayout.error = null
                 addressAddressLayout.error = null
-
                 val newAddress = Address(
                     addressName,
                     addressText
                 )
-
                 if (EYMAplication.getInstance().user != null) {
                     // Kullanıcının mevcut adres listesini al
                     usersCollection.document(EYMAplication.getInstance().user!!.id!!).get()
@@ -69,7 +61,6 @@ class AddAddressActivity : AppCompatActivity() {
                                 if (user != null) {
                                     // Adresleri kullanıcının adres listesine ekleyin
                                     user.addresses?.add(newAddress)
-
                                     // Adres listesini Firestore'a güncelleyin
                                     usersCollection.document(EYMAplication.getInstance().user!!.id!!)
                                         .update("addresses", user.addresses)

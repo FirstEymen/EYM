@@ -13,12 +13,14 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bilireymen.eym.EYMAplication
 import com.bilireymen.eym.ProductDetailsActivity
 import com.bilireymen.eym.R
+import com.bilireymen.eym.SearchActivity
 import com.bilireymen.eym.adapter.CarouselRvAdapter
 import com.bilireymen.eym.adapter.GridRvAdapter
 import com.bilireymen.eym.adapter.HorizontalRvItemAdapter
@@ -26,7 +28,6 @@ import com.bilireymen.eym.databinding.FragmentHomeBinding
 import com.bilireymen.eym.models.Category
 import com.bilireymen.eym.models.Product
 import com.google.firebase.firestore.FirebaseFirestore
-
 class HomeFragment:Fragment(R.layout.fragment_home) {
     private lateinit var firestore: FirebaseFirestore
     var productArrayList:ArrayList<Product> = ArrayList()
@@ -34,43 +35,45 @@ class HomeFragment:Fragment(R.layout.fragment_home) {
     private lateinit var adapterHorizontal: HorizontalRvItemAdapter
     private lateinit var adapterCarousel: CarouselRvAdapter
     private lateinit var adapterGrid: GridRvAdapter
-
-
     override fun onResume() {
         super.onResume()
     }
     override fun onStart() {
         super.onStart()
-
     }
     override fun onStop() {
         super.onStop()
     }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         binding = FragmentHomeBinding.inflate(layoutInflater)
-
         firestore = FirebaseFirestore.getInstance()
-
         getData()
         horizontalRvAdapter()
         carouselRvAdapter()
         gridRvAdapter()
 
+        val searchBar = binding.root.findViewById<ConstraintLayout>(R.id.searchBar)
+        val microphoneHome = binding.root.findViewById<ImageView>(R.id.microphoneHome)
+
+        searchBar.setOnClickListener {
+            val intent = Intent(requireContext(), SearchActivity::class.java)
+            startActivity(intent)
+        }
+        microphoneHome.setOnClickListener{
+            val intent = Intent(requireContext(),SearchActivity::class.java)
+            startActivity(intent)
+        }
+
         return binding.root
     }
-
-
     private fun horizontalRvAdapter(){
         adapterHorizontal = HorizontalRvItemAdapter(requireContext(), productArrayList ?: arrayListOf())
         binding.horizontalRv.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.horizontalRv.adapter = adapterHorizontal
-
         adapterHorizontal.setOnItemClickListener(object : HorizontalRvItemAdapter.OnItemClickListener{
             override fun onItemClick(position: Int, product: Product) {
                 val intent = Intent(requireContext(), ProductDetailsActivity::class.java)
@@ -78,9 +81,7 @@ class HomeFragment:Fragment(R.layout.fragment_home) {
                 startActivity(intent)
             }
         })
-
     }
-
     private fun carouselRvAdapter(){
         adapterCarousel = CarouselRvAdapter(requireContext(), productArrayList ?: arrayListOf())
         binding.carouselRv.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
@@ -98,22 +99,18 @@ class HomeFragment:Fragment(R.layout.fragment_home) {
             }
         })
     }
-
     private fun gridRvAdapter(){
         adapterGrid = GridRvAdapter(requireContext(), productArrayList ?: arrayListOf())
         binding.gridRV.layoutManager = GridLayoutManager(requireContext(), 2)
         binding.gridRV.adapter = adapterGrid
-
         adapterGrid.setOnItemClickListener(object : GridRvAdapter.OnItemClickListener {
             override fun onItemClick(position: Int, product: Product) {
-
                 val intent = Intent(requireContext(), ProductDetailsActivity::class.java)
                 intent.putExtra("product", product)
                 startActivity(intent)
             }
         })
     }
-
     private fun getData(){
         firestore.collection("Products")
             .get()
@@ -136,7 +133,6 @@ class HomeFragment:Fragment(R.layout.fragment_home) {
                 binding.horizontalRv.adapter!!.notifyDataSetChanged()
                 binding.carouselRv.adapter!!.notifyDataSetChanged()
                 binding.gridRV.adapter!!.notifyDataSetChanged()
-
             }
             .addOnFailureListener {
                 val builder =
