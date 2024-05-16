@@ -1,16 +1,10 @@
 package com.bilireymen.eym
 
-
-
 import com.bilireymen.eym.models.User
 import com.google.firebase.firestore.FirebaseFirestore
-
-// Firestore veritabanına yeni kullanıcıyı eklemek için kullanılacak sınıf
 class FirestoreHelper {
-
     private val firestore = FirebaseFirestore.getInstance()
     private val usersCollection = firestore.collection("Users")
-
     // Kullanıcı kaydını Firestore'a ekleyen fonksiyon
     fun registerUser(
         firstName: String,
@@ -23,7 +17,6 @@ class FirestoreHelper {
     ) {
         // Veri doğrulama işlemleri burada yapılabilir
         val newUserId = usersCollection.document().id
-
         // Firestore'a yeni bir kullanıcı ekleyin
         val newUser = User(
             id=newUserId,
@@ -33,7 +26,6 @@ class FirestoreHelper {
             email = email,
             password = password
         )
-
         usersCollection.document(newUserId).set(newUser)
             .addOnSuccessListener {
                 // Kullanıcı başarıyla kaydedildi
@@ -44,14 +36,12 @@ class FirestoreHelper {
                 onFailure(e)
             }
     }
-
     fun loginUser(
         email: String,
         password: String,
         onSuccess: (User?) -> Unit,
         onFailure: (Exception) -> Unit
     ) {
-
         usersCollection.whereEqualTo("email", email)
             .get()
             .addOnSuccessListener { querySnapshot ->
@@ -66,7 +56,6 @@ class FirestoreHelper {
                 onFailure(e)
             }
     }
-
     fun findUserByEmail(
         email: String,
         onSuccess: (User?) -> Unit,
@@ -86,7 +75,6 @@ class FirestoreHelper {
                 onFailure(e)
             }
     }
-
     fun updateUserPassword(
         userId: String,
         newPassword: String,
@@ -95,7 +83,6 @@ class FirestoreHelper {
     ) {
         // Şifreyi güncellemek istediğiniz kullanıcının Firestore belgesini alın
         val userDocument = usersCollection.document(userId)
-
         userDocument.update("password", newPassword)
             .addOnSuccessListener {
                 onSuccess()
@@ -104,7 +91,6 @@ class FirestoreHelper {
                 onFailure(e)
             }
     }
-
     fun updateUser(
         userId: String,
         updatedFields: Map<String, Any>,
@@ -120,5 +106,4 @@ class FirestoreHelper {
                 onFailure(e)
             }
     }
-
 }

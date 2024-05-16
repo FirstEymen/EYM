@@ -10,11 +10,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import org.mindrot.jbcrypt.BCrypt
-
 class RegisterActivity : AppCompatActivity() {
-
     private val firestoreHelper = FirestoreHelper()
-
     private lateinit var registerName: TextInputEditText
     private lateinit var registerLastName: TextInputEditText
     private lateinit var edPhoneRegister: TextInputEditText
@@ -26,24 +23,20 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var emailTextInputLayout: TextInputLayout
     private lateinit var passwordTextInputLayout: TextInputLayout
     private lateinit var buttonRegister: Button
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
-
         registerName = findViewById(R.id.registerName)
         registerLastName = findViewById(R.id.registerLastName)
         edPhoneRegister = findViewById(R.id.edPhoneRegister)
         edEmailRegister = findViewById(R.id.edEmailRegister)
         edPasswordRegister = findViewById(R.id.edPasswordRegister)
         buttonRegister = findViewById(R.id.buttonRegister)
-
         nameTextInputLayout=findViewById(R.id.nameTextInputLayout)
         lastNameTextInputLayout=findViewById(R.id.lastNameTextInputLayout)
         phoneTextInputLayout=findViewById(R.id.phoneTextInputLayout)
         emailTextInputLayout=findViewById(R.id.emailTextInputLayout)
         passwordTextInputLayout=findViewById(R.id.passwordTextInputLayout)
-
         // Register düğmesine tıklanınca çalışacak işlev
         buttonRegister.setOnClickListener {
             val firstName = registerName.text.toString()
@@ -51,19 +44,14 @@ class RegisterActivity : AppCompatActivity() {
             val phone = edPhoneRegister.text.toString()
             val email = edEmailRegister.text.toString()
             val password = edPasswordRegister.text.toString()
-
             if (validateInputs(firstName, lastName, phone, email, password)) {
-
                 // Hataları temizle
                 nameTextInputLayout.error = null
                 lastNameTextInputLayout.error = null
                 phoneTextInputLayout.error = null
                 emailTextInputLayout.error = null
                 passwordTextInputLayout.error = null
-
                 val hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt())
-
-
                 // Veri doğrulama işlemlerini geçtiğinizden emin olduktan sonra Firestore'a kaydı yapabilirsiniz.
                 firestoreHelper.registerUser(
                     firstName,
@@ -101,31 +89,26 @@ class RegisterActivity : AppCompatActivity() {
             }
         }
     }
-
     private fun validateInputs(firstName: String, lastName: String, phone: String, email: String, password: String): Boolean {
         var isValid = true
-
         if (firstName.isEmpty()) {
             nameTextInputLayout.error = "Namespace cannot be empty"
             isValid = false
         } else {
             nameTextInputLayout.error = null
         }
-
         if (lastName.isEmpty()) {
             lastNameTextInputLayout.error = "Surname field cannot be empty"
             isValid = false
         } else {
             lastNameTextInputLayout.error = null
         }
-
         if (isValidPhoneNumber(phone)) {
             phoneTextInputLayout.error = null
         } else {
             phoneTextInputLayout.error = "Invalid phone number"
             isValid = false
         }
-
         if (email.isEmpty()) {
             emailTextInputLayout.error = "Email field cannot be empty"
             isValid = false
@@ -135,7 +118,6 @@ class RegisterActivity : AppCompatActivity() {
         } else {
             emailTextInputLayout.error = null
         }
-
         if (password.isEmpty()) {
             passwordTextInputLayout.error = "Password field cannot be empty"
             isValid = false
@@ -145,15 +127,10 @@ class RegisterActivity : AppCompatActivity() {
         } else {
             passwordTextInputLayout.error = null
         }
-
         return isValid
     }
-
     private fun isValidPhoneNumber(phone: String): Boolean {
         val phonePattern = Regex("^(\\+\\d{1,3}[- ]?)?\\d{10}\$")
         return phonePattern.matches(phone)
     }
-
-
-
 }

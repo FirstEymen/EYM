@@ -1,9 +1,7 @@
 package com.bilireymen.eym.models
 
 import java.io.Serializable
-
  class Product:Serializable{
-
     var id:String?=null
     var name:String?=null
     var price: Double?=null
@@ -12,7 +10,6 @@ import java.io.Serializable
     var sizes:List<String>?=null
     var images:ArrayList<String>?=ArrayList()
      var category: Category?=null
-
      constructor(id: String?,   name: String?,price: Double?,
                  offerPercentage:Double?,description:String?,sizes:List<String>?
      , images:ArrayList<String>?,category: Category?) {
@@ -25,10 +22,7 @@ import java.io.Serializable
          this.images=images
          this.category=category
      }
-
      constructor() {}
-
-
  }
 
 

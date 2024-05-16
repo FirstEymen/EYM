@@ -17,25 +17,20 @@ import com.bilireymen.eym.adapter.GridRvCategoryAdapter
 import com.bilireymen.eym.databinding.FragmentCategoryBinding
 import com.bilireymen.eym.models.Category
 import com.google.firebase.firestore.FirebaseFirestore
-
 class CategoryFragment:Fragment(R.layout.fragment_category) {
-
     private lateinit var firestore: FirebaseFirestore
     var categoryArrayList:ArrayList<Category> = ArrayList()
     private lateinit var binding: FragmentCategoryBinding
     private lateinit var adapterGridCategory:GridRvCategoryAdapter
-
     override fun onResume() {
         super.onResume()
     }
     override fun onStart() {
         super.onStart()
-
     }
     override fun onStop() {
         super.onStop()
     }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -47,7 +42,6 @@ class CategoryFragment:Fragment(R.layout.fragment_category) {
         gridRvCategoryAdapter()
         return binding.root
     }
-
     private fun gridRvCategoryAdapter(){
         adapterGridCategory = GridRvCategoryAdapter(requireContext(), categoryArrayList ?: arrayListOf())
         binding.gridRvCategoryAdapter.layoutManager = GridLayoutManager(requireContext(), 2)
@@ -61,7 +55,6 @@ class CategoryFragment:Fragment(R.layout.fragment_category) {
             }
         })
     }
-
     private fun getData(){
         firestore.collection("Categorys")
             .get()
@@ -92,6 +85,4 @@ class CategoryFragment:Fragment(R.layout.fragment_category) {
                 builder.show()
             }
     }
-
-
 }

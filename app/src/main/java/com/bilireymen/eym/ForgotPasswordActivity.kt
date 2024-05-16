@@ -8,9 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import org.mindrot.jbcrypt.BCrypt
-
 class ForgotPasswordActivity : AppCompatActivity() {
-
     private lateinit var firestoreHelper: FirestoreHelper
     private lateinit var edForgotEmail: TextInputEditText
     private lateinit var edNewPassword: TextInputEditText
@@ -19,11 +17,9 @@ class ForgotPasswordActivity : AppCompatActivity() {
     private lateinit var newPasswordTextInputLayout: TextInputLayout
     private lateinit var passwordConfirmationTextInputLayout: TextInputLayout
     private lateinit var savePasswordButton: Button
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_forgot_password)
-
         edForgotEmail = findViewById(R.id.forgotEmail)
         edNewPassword = findViewById(R.id.forgotPassword)
         edPasswordConfirmation = findViewById(R.id.forgotPasswordConfirmation)
@@ -31,14 +27,11 @@ class ForgotPasswordActivity : AppCompatActivity() {
         newPasswordTextInputLayout = findViewById(R.id.forgotPasswordTextInputLayout)
         passwordConfirmationTextInputLayout = findViewById(R.id.forgotPasswordConfirmationTextInputLayout)
         savePasswordButton = findViewById(R.id.savePassword)
-
         firestoreHelper = FirestoreHelper()
-
         savePasswordButton.setOnClickListener {
             val email = edForgotEmail.text.toString()
             val newPassword = edNewPassword.text.toString()
             val passwordConfirmation = edPasswordConfirmation.text.toString()
-
             if (isValidEmail(email) && isValidPassword(newPassword) && newPassword == passwordConfirmation) {
                 // E-posta adresini kullanarak kullanıcıyı bulun
                 firestoreHelper.findUserByEmail(email,
@@ -46,7 +39,6 @@ class ForgotPasswordActivity : AppCompatActivity() {
                         if (user != null) {
                             // Yeni şifreyi güvenli bir şekilde saklayın (örneğin, BCrypt kullanarak)
                             val hashedPassword = BCrypt.hashpw(newPassword, BCrypt.gensalt())
-
                             // Kullanıcının şifresini güncelleyin
                             firestoreHelper.updateUserPassword(
                                 user.id!!, hashedPassword,
@@ -74,13 +66,11 @@ class ForgotPasswordActivity : AppCompatActivity() {
                 } else {
                     emailTextInputLayout.error = null
                 }
-
                 if (!isValidPassword(newPassword)) {
                     newPasswordTextInputLayout.error = "Invalid password"
                 } else {
                     newPasswordTextInputLayout.error = null
                 }
-
                 if (newPassword != passwordConfirmation) {
                     passwordConfirmationTextInputLayout.error = "Passwords do not match"
                 } else {
@@ -89,11 +79,9 @@ class ForgotPasswordActivity : AppCompatActivity() {
             }
         }
     }
-
     private fun isValidEmail(email: String): Boolean {
         return Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
-
     private fun isValidPassword(password: String): Boolean {
         return password.length >= 6
     }

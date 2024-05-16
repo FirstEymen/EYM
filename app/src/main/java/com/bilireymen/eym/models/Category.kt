@@ -1,7 +1,6 @@
 package com.bilireymen.eym.models
 
 import java.io.Serializable
-
  class Category:Serializable {
     var id:String?=null
     var name:String?=null
@@ -12,7 +11,6 @@ import java.io.Serializable
         this.images=images
     }
     constructor() {}
-
      companion object{
          fun categoryHashMapToCategory(hashMap:HashMap<String,Any>):Category{
              var category:Category= Category()

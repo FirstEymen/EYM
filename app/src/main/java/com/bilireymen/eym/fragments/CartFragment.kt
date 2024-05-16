@@ -24,9 +24,7 @@ import com.bilireymen.eym.models.Category
 import com.bilireymen.eym.models.Product
 import com.bilireymen.eym.models.User
 import com.google.firebase.firestore.FirebaseFirestore
-
 class CartFragment : Fragment(R.layout.fragment_cart), CartItemAdapter.OnCartUpdateListener {
-
     private lateinit var cartItemAdapter: CartItemAdapter
     private lateinit var cartItemsRecyclerView: RecyclerView
     private var cartProducts: ArrayList<CartProduct> = ArrayList()
@@ -35,25 +33,19 @@ class CartFragment : Fragment(R.layout.fragment_cart), CartItemAdapter.OnCartUpd
     private var selectedAddress: Address? = null
     private val ADDRESS_LIST_REQUEST_CODE = 1
     private val ADDRESS_DETAIL_REQUEST_CODE = 2
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         firebaseFirestore = FirebaseFirestore.getInstance()
-
         val userId = EYMAplication.getUserId()
-
         cartItemsRecyclerView = view.findViewById<RecyclerView>(R.id.cartRv)
         cartItemAdapter = CartItemAdapter(requireContext(), cartProducts, firebaseFirestore, userId, this)
         cartItemsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         cartItemsRecyclerView.adapter = cartItemAdapter
         cartItemAdapter.setOnCartUpdateListener(this)
-
         firebaseFirestore.collection("Cart").document(userId)
             .collection("Cart Products")
             .get()
             .addOnSuccessListener { result ->
-
                 for (document in result) {
                     val data = document.data
                     val productData = data["product"] as Map<String, Any>
@@ -92,7 +84,6 @@ class CartFragment : Fragment(R.layout.fragment_cart), CartItemAdapter.OnCartUpd
                 }
                 builder.show()
             }
-
         val checkoutButton = view.findViewById<TextView>(R.id.checkoutBtn)
         checkoutButton.setOnClickListener {
             if(EYMAplication.getInstance().user!=null) {
@@ -103,7 +94,6 @@ class CartFragment : Fragment(R.layout.fragment_cart), CartItemAdapter.OnCartUpd
                 startActivityForResult(intent,ADDRESS_DETAIL_REQUEST_CODE)
             }
         }
-
     }
     private fun updateSubtotalPrice() {
         var totalCartPrice = 0.0
@@ -113,15 +103,12 @@ class CartFragment : Fragment(R.layout.fragment_cart), CartItemAdapter.OnCartUpd
         val subtotalPriceTextView = view?.findViewById<TextView>(R.id.subtotalPrice)
         subtotalPriceTextView?.text = "$${String.format("%.2f", totalCartPrice)}"
     }
-
     override fun onCartUpdated() {
         updateSubtotalPrice()
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
         if (requestCode == ADDRESS_LIST_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-
             if (data != null && data.hasExtra("selectedAddress")) {
                 val selectedAddress = data.getSerializableExtra("selectedAddress") as Address
                 val intent = Intent(requireContext(), CheckoutActivity::class.java)
@@ -141,10 +128,8 @@ class CartFragment : Fragment(R.layout.fragment_cart), CartItemAdapter.OnCartUpd
             } else {
                 Toast.makeText(requireContext(), "Please provide an address name and address.", Toast.LENGTH_SHORT).show()
             }
-
         }
     }
-
 }
 
 

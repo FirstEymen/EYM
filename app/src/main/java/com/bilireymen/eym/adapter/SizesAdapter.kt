@@ -10,12 +10,9 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bilireymen.eym.databinding.SizeItemBinding
 import com.bumptech.glide.request.target.FixedSizeDrawable
-
-class SizesAdapter : RecyclerView.Adapter<SizesAdapter.SizesViewHolder>() {
-
+class SizesAdapter : RecyclerView.Adapter<SizesAdapter.SizesViewHolder>(){
     private var selectedPosition= -1
     open var selectedSize:String?=null
-
     inner class SizesViewHolder(private val binding:SizeItemBinding):
         ViewHolder(binding.root){
             fun bind(size:String,position: Int){
@@ -31,19 +28,15 @@ class SizesAdapter : RecyclerView.Adapter<SizesAdapter.SizesViewHolder>() {
                 }
             }
         }
-
     private val diffCallback= object : DiffUtil.ItemCallback<String>(){
         override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
             return oldItem==newItem
         }
-
         override fun areContentsTheSame(oldItem: String, newItem: String): Boolean {
             return oldItem==newItem
         }
     }
-
     val differ = AsyncListDiffer(this,diffCallback)
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SizesViewHolder {
         return SizesViewHolder(
             SizeItemBinding.inflate(
@@ -51,11 +44,9 @@ class SizesAdapter : RecyclerView.Adapter<SizesAdapter.SizesViewHolder>() {
             )
         )
     }
-
     override fun onBindViewHolder(holder: SizesViewHolder, position: Int) {
         val size=differ.currentList[position]
         holder.bind(size,position)
-
         holder.itemView.setOnClickListener{
             if (selectedPosition >= 0)
                 notifyItemChanged(selectedPosition)
@@ -65,10 +56,8 @@ class SizesAdapter : RecyclerView.Adapter<SizesAdapter.SizesViewHolder>() {
             selectedSize=differ.currentList.get(position)
         }
     }
-
     override fun getItemCount(): Int {
         return differ.currentList.size
     }
-
     var onItemClick:((String) -> Unit)?=null
 }

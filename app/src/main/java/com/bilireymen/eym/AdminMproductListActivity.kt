@@ -19,40 +19,26 @@ import com.bilireymen.eym.models.Category
 import com.bilireymen.eym.models.Product
 import com.google.firebase.firestore.FirebaseFirestore
 import java.util.UUID
-
 class AdminMproductListActivity:AppCompatActivity() {
-
     private lateinit var firestore: FirebaseFirestore
     private lateinit var binding: ActivityAdminMproductListBinding
     lateinit var productArrayList: ArrayList<Product>
     lateinit var productAdapter: ProductAdapter
-
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAdminMproductListBinding.inflate(layoutInflater)
         val view: View = binding.root
         setContentView(view)
         productArrayList = ArrayList()
-
         val uuid = UUID.randomUUID()
         val imageName = "images/$uuid.jpg"
-
         firestore=FirebaseFirestore.getInstance()
-
         binding.productListRecyclerView.layoutManager = GridLayoutManager(this,2)
         productAdapter = ProductAdapter(productArrayList,this)
         binding.productListRecyclerView.adapter = productAdapter
-
-
         getData()
-
     }
-
-
     private fun getData() {
-
         firestore.collection("Products")
             .get()
             .addOnSuccessListener { result->
@@ -86,11 +72,5 @@ class AdminMproductListActivity:AppCompatActivity() {
                 }
                 builder.show()
             }
-
     }
-
-
-
-
-
 }
