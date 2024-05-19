@@ -19,4 +19,5 @@ Proje Ekibi: Abdullah Eymen Bilir
 4.Durum Senaryoları:https://github.com/FirstEymen/EYM/blob/master/Durum%20Senaryolar%C4%B1.pdf
 
 5.Veritabanı Diyagramı: https://github.com/FirstEymen/EYM/blob/master/veritaban%C4%B1%20diyagram%C4%B1.png
+6.Front-End:
 
