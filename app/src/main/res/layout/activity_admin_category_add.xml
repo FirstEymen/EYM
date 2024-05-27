@@ -78,6 +78,19 @@
             tools:ignore="MissingConstraints">
         </Button>
 
+        <Button
+            android:id="@+id/deleteCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="36dp"
+            android:layout_marginTop="156dp"
+            android:text="Delete"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="MissingConstraints">
+        </Button>
+
 
 
         <TextView

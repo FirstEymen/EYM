@@ -124,11 +124,21 @@ class HomeFragment:Fragment(R.layout.fragment_home) {
                     val description = data["description"] as String
                     val sizes = data["sizes"] as List<String>
                     val images = data["images"] as ArrayList<String>
-                    val category=Category.categoryHashMapToCategory((data["category"] as HashMap<String,Any>))
-                    var arrayList=ArrayList<String>()
-                    arrayList.addAll(images)
-                    val product = Product(id, name, price, offerPercentage, description, sizes, arrayList,category)
-                    productArrayList.add(product)
+                    val categoryData = data["category"] as? Map<String, Any>
+                    val category = if (categoryData != null) {
+                        Category.categoryHashMapToCategory(categoryData as HashMap<String, Any>)
+                    } else {
+                        null // veya varsayılan bir kategori değeri belirleyin
+                    }
+
+                    if (category != null) {
+                        val arrayList = ArrayList<String>()
+                        arrayList.addAll(images)
+                        val product = Product(id, name, price, offerPercentage, description, sizes, arrayList, category)
+                        productArrayList.add(product)
+                    } else {
+                        // category null ise yapılacak işlemler (gerekirse)
+                    }
                 }
                 binding.horizontalRv.adapter!!.notifyDataSetChanged()
                 binding.carouselRv.adapter!!.notifyDataSetChanged()

@@ -67,6 +67,52 @@ class AdminCategoryAddActivity:AppCompatActivity() {
             intent.type="image/*"
             selectedImagesActivityResult.launch(intent)
         }
+
+        binding.deleteCategory.setOnClickListener {
+            val categoryId = category?.id
+            if (categoryId != null) {
+                showDeleteConfirmationDialog(categoryId)
+            } else {
+                Toast.makeText(this, "Category ID is missing.", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun deleteCategory(categoryId: String) {
+        firestore.collection("Categorys").document(categoryId)
+            .delete()
+            .addOnSuccessListener {
+                val builder = AlertDialog.Builder(ContextThemeWrapper(this, R.style.AlertDialogCustom))
+                builder.setTitle("Alert!!")
+                builder.setMessage("Category deleted successfully")
+                builder.setPositiveButton(android.R.string.yes) { dialog, which ->
+                    Toast.makeText(applicationContext, android.R.string.yes, Toast.LENGTH_SHORT).show()
+                    finish() // Activity'yi kapat ve önceki ekrana dön
+                }
+                builder.show()
+            }
+            .addOnFailureListener {
+                val builder = AlertDialog.Builder(ContextThemeWrapper(this, R.style.AlertDialogCustom))
+                builder.setTitle("Alert!!")
+                builder.setMessage("An error occurred while deleting the category")
+                builder.setPositiveButton(android.R.string.yes) { dialog, which ->
+                    Toast.makeText(applicationContext, android.R.string.yes, Toast.LENGTH_SHORT).show()
+                }
+                builder.show()
+            }
+    }
+
+    private fun showDeleteConfirmationDialog(categoryId: String) {
+        val builder = AlertDialog.Builder(ContextThemeWrapper(this, R.style.AlertDialogCustom))
+        builder.setTitle("Delete Category")
+        builder.setMessage("Are you sure you want to delete this category?")
+        builder.setPositiveButton("Delete") { dialog, which ->
+            deleteCategory(categoryId)
+        }
+        builder.setNegativeButton("Cancel") { dialog, which ->
+            dialog.dismiss()
+        }
+        builder.show()
     }
     private fun initEditCategory(){
         binding.categoryName.setText(category!!.name)
